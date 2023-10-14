@@ -1,1 +1,21 @@
-﻿  Biplanes.vcxproj -> C:\Users\slava\source\repos\Biplanes\Debug\Biplanes.exe
+﻿  Game.cpp
+C:\Users\slava\source\repos\Biplanes\Biplanes\Game.h(32,1): warning C4326: return type of 'main' should be 'int' instead of 'void'
+C:\Users\slava\source\repos\Biplanes\Biplanes\Game.cpp(17,72): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+C:\Users\slava\source\repos\Biplanes\Biplanes\Game.cpp(17,72): warning C4244:         with
+C:\Users\slava\source\repos\Biplanes\Biplanes\Game.cpp(17,72): warning C4244:         [
+C:\Users\slava\source\repos\Biplanes\Biplanes\Game.cpp(17,72): warning C4244:             T=unsigned int
+C:\Users\slava\source\repos\Biplanes\Biplanes\Game.cpp(17,72): warning C4244:         ]
+C:\Users\slava\source\repos\Biplanes\Biplanes\Game.cpp(17,72): warning C4244:         and
+C:\Users\slava\source\repos\Biplanes\Biplanes\Game.cpp(17,72): warning C4244:         [
+C:\Users\slava\source\repos\Biplanes\Biplanes\Game.cpp(17,72): warning C4244:             T=float
+C:\Users\slava\source\repos\Biplanes\Biplanes\Game.cpp(17,72): warning C4244:         ]
+C:\Users\slava\source\repos\Biplanes\Biplanes\Game.cpp(17,48): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+C:\Users\slava\source\repos\Biplanes\Biplanes\Game.cpp(17,48): warning C4244:         with
+C:\Users\slava\source\repos\Biplanes\Biplanes\Game.cpp(17,48): warning C4244:         [
+C:\Users\slava\source\repos\Biplanes\Biplanes\Game.cpp(17,48): warning C4244:             T=unsigned int
+C:\Users\slava\source\repos\Biplanes\Biplanes\Game.cpp(17,48): warning C4244:         ]
+C:\Users\slava\source\repos\Biplanes\Biplanes\Game.cpp(17,48): warning C4244:         and
+C:\Users\slava\source\repos\Biplanes\Biplanes\Game.cpp(17,48): warning C4244:         [
+C:\Users\slava\source\repos\Biplanes\Biplanes\Game.cpp(17,48): warning C4244:             T=float
+C:\Users\slava\source\repos\Biplanes\Biplanes\Game.cpp(17,48): warning C4244:         ]
+  Biplanes.vcxproj -> C:\Users\slava\source\repos\Biplanes\Debug\Biplanes.exe

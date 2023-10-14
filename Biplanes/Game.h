@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "Player.h"
 #include "Plane.h"
 
 const sf::Vector2i WINDOW_SIZE = sf::Vector2i(896, 588);
@@ -15,13 +16,15 @@ public:
 	void render();
 private:
 	sf::RenderWindow mWindow;
+	Player mPlayerController;
 
 	sf::Texture mBGTexture;
 	sf::Texture mPlaneTexture;
 	sf::Texture mBulletTexture;
 
 	sf::Sprite mBGSprite;
-	Plane mPlayer;
+	Plane mPlayerPlane;
+	Plane mEnemyPlane;
 };
 
 

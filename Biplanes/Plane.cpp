@@ -18,6 +18,11 @@ Plane::Plane(const sf::Texture& planeTexture, sf::Texture* bulletTexture, const 
 	mGasDirection = sf::Vector2f(cos(radians), sin(radians));
 }
 
+sf::FloatRect Plane::getBoundingRect() const
+{
+	return getTransform().transformRect(mPlaneSprite.getGlobalBounds());
+}
+
 void Plane::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	for (auto& bullet : mBullets)
@@ -26,28 +31,12 @@ void Plane::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	}
 	states.transform *= getTransform();
 	target.draw(mPlaneSprite, states);
+
+	drawBoundingBox(target, states);
 }
 
 void Plane::update(float timePerFrame)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-		gas();
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-		steer(-1);
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-		steer(1);
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-	{
-		sf::Time timeSinceLastShot = mLastShotClock.getElapsedTime();
-		if (timeSinceLastShot.asSeconds() >= mTimePerShot)
-		{
-			shoot();
-			mLastShotClock.restart();
-		}
-	}
-
 	processMovement(timePerFrame);
 
 	for (auto& bullet : mBullets)
@@ -56,10 +45,10 @@ void Plane::update(float timePerFrame)
 	}
 }
 
-void Plane::gas()
+void Plane::gas(bool isPressed)
 {
-	// TODO: this is for test only
-	mVelocity = MAX_SPEED;
+	// toggle velocity, this is for test only
+	mVelocity = isPressed ? MAX_SPEED : 0;
 }
 
 void Plane::steer(int direction)
@@ -82,7 +71,7 @@ void Plane::processMovement(float timePerFrame)
 	float gasToGravityAngleCos = (mGasDirection.x * GRAVITY_DIR.x + mGasDirection.y * GRAVITY_DIR.y) / (magnitude(mGasDirection) * magnitude(GRAVITY_DIR));
 	mVelocity += SPEED + gasToGravityAngleCos * MASS * GRAVITY;
 
-	mVelocityDirection = mVelocity > 0 ? mGasDirection : GRAVITY_DIR;
+	mVelocityDirection = mVelocity >= 0 ? mGasDirection : GRAVITY_DIR;
 	mVelocityDirection = normalized(mVelocityDirection);
 
 	if (mVelocity < -MAX_SPEED)
@@ -91,10 +80,21 @@ void Plane::processMovement(float timePerFrame)
 		mVelocity = MAX_SPEED;
 }
 
+bool Plane::isShootAllowed()
+{
+	sf::Time timeSinceLastShot = mLastShotClock.getElapsedTime();
+	return timeSinceLastShot.asSeconds() >= mTimePerShot;
+}
+
 void Plane::shoot()
 {
+	if (!isShootAllowed())
+		return;
+
 	Bullet bullet(*mBulletTexture, mGasDirection);
 	bullet.setPosition(getPosition());
 	bullet.setScale(sf::Vector2f(1.f, 1.f) * 5.f);
 	mBullets.push_back(bullet);
+
+	mLastShotClock.restart();
 }
