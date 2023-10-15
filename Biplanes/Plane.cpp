@@ -1,4 +1,5 @@
 #include "Plane.h"
+#include "SceneManager.h"
 #include "MathUtilities.inl"
 
 #include <iostream>
@@ -25,10 +26,6 @@ sf::FloatRect Plane::getBoundingRect() const
 
 void Plane::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	for (auto& bullet : mBullets)
-	{
-		target.draw(bullet, states);
-	}
 	states.transform *= getTransform();
 	target.draw(mPlaneSprite, states);
 
@@ -38,11 +35,6 @@ void Plane::draw(sf::RenderTarget& target, sf::RenderStates states) const
 void Plane::update(float timePerFrame)
 {
 	processMovement(timePerFrame);
-
-	for (auto& bullet : mBullets)
-	{
-		bullet.update(timePerFrame);
-	}
 }
 
 void Plane::gas(bool isPressed)
@@ -91,10 +83,9 @@ void Plane::shoot()
 	if (!isShootAllowed())
 		return;
 
-	Bullet bullet(*mBulletTexture, mGasDirection);
-	bullet.setPosition(getPosition());
-	bullet.setScale(sf::Vector2f(1.f, 1.f) * 5.f);
-	mBullets.push_back(bullet);
+	auto bullet = SceneManager::createEntity<Bullet>(*mBulletTexture, mGasDirection);
+	bullet->setPosition(getPosition());
+	bullet->setScale(sf::Vector2f(1.f, 1.f) * 5.f);
 
 	mLastShotClock.restart();
 }

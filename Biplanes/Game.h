@@ -23,8 +23,6 @@ private:
 	sf::Texture mBulletTexture;
 
 	sf::Sprite mBGSprite;
-	Plane mPlayerPlane;
-	Plane mEnemyPlane;
 };
 
 

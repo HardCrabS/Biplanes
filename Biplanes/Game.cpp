@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "Game.h"
+#include "SceneManager.h"
 
 Game::Game() : mWindow(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), "Biplanes")
 {
@@ -8,9 +9,10 @@ Game::Game() : mWindow(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), "Biplanes")
 	mBulletTexture.loadFromFile("./Assets/bullet.png");
 	mBGTexture.loadFromFile("./Assets/background.png");
 
-	mPlayerPlane = Plane(mPlaneTexture, &mBulletTexture, mWindow.getView().getSize());
-	mEnemyPlane = Plane(mPlaneTexture, &mBulletTexture, mWindow.getView().getSize());
-	mPlayerController = Player(&mPlayerPlane);
+	//auto playerPlane = std::make_shared<Plane>(mPlaneTexture, &mBulletTexture, mWindow.getView().getSize());
+	auto playerPlane = SceneManager::createEntity<Plane>(mPlaneTexture, &mBulletTexture, mWindow.getView().getSize());
+	mPlayerController.setPlane(playerPlane);
+	//SceneManager::get().addEntity(playerPlane);
 
 	mBGSprite = sf::Sprite(mBGTexture);
 	auto size = mBGTexture.getSize();
@@ -49,16 +51,19 @@ void Game::handleEvents()
 void Game::update(float timePerFrame)
 {
 	mPlayerController.update(timePerFrame);
-	mPlayerPlane.update(timePerFrame);
+	SceneManager::get().update(timePerFrame);
 
-	auto playerPos = mPlayerPlane.getPosition();
-	if (playerPos.x > mWindow.getView().getSize().x)
+	for (auto entity : SceneManager::get().getEntities())
 	{
-		mPlayerPlane.setPosition(0, playerPos.y);
-	}
-	else if (playerPos.x < 0)
-	{
-		mPlayerPlane.setPosition(mWindow.getView().getSize().x, playerPos.y);
+		auto entityPos = entity->getPosition();
+		if (entityPos.x > mWindow.getView().getSize().x)
+		{
+			entity->setPosition(0, entityPos.y);
+		}
+		else if (entityPos.x < 0)
+		{
+			entity->setPosition(mWindow.getView().getSize().x, entityPos.y);
+		}
 	}
 }
 
@@ -66,7 +71,9 @@ void Game::render()
 {
 	mWindow.clear();
 	mWindow.draw(mBGSprite);
-	mWindow.draw(mPlayerPlane);
-	mWindow.draw(mEnemyPlane);
+	for (auto entity : SceneManager::get().getEntities())
+	{
+		mWindow.draw(*entity);
+	}
 	mWindow.display();
 }

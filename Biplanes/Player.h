@@ -1,13 +1,13 @@
 #pragma once
+#include <memory>
 #include "Plane.h"
-
 
 class Player
 {
 public:
 	Player() {}
-	Player(Plane* plane);
 	void update(float fixedTime);
+	void setPlane(std::shared_ptr<Plane> plane);
 private:
-	Plane* mPlane;
+	std::shared_ptr<Plane> mPlane;
 };

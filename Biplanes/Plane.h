@@ -46,7 +46,6 @@ private:
 	sf::Vector2f mGasDirection;
 	sf::Vector2f mVelocityDirection;
 
-	std::vector<Bullet> mBullets;
 	sf::Clock mLastShotClock;
 	float mTimePerShot = 0.5f;
 };

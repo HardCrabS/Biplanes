@@ -1,10 +1,6 @@
 #include "Player.h"
 #pragma once
 
-Player::Player(Plane* plane) : mPlane(plane)
-{
-}
-
 void Player::update(float fixedTime)
 {
 #ifdef MANUAL_VELOCITY
@@ -20,4 +16,9 @@ void Player::update(float fixedTime)
 	{
 		mPlane->shoot();
 	}
+}
+
+void Player::setPlane(std::shared_ptr<Plane> plane)
+{
+	mPlane = plane;
 }
