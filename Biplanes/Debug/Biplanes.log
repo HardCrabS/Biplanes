@@ -1,2 +1,21 @@
-﻿  Bullet.cpp
-  Biplanes.vcxproj -> C:\Users\slava\source\repos\Biplanes\Debug\Biplanes.exe
+﻿  Game.cpp
+D:\Study\Projects\Biplanes\Biplanes\Game.h(32,1): warning C4326: return type of 'main' should be 'int' instead of 'void'
+D:\Study\Projects\Biplanes\Biplanes\Game.cpp(17,72): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+D:\Study\Projects\Biplanes\Biplanes\Game.cpp(17,48): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+  Biplanes.vcxproj -> D:\Study\Projects\Biplanes\Debug\Biplanes.exe

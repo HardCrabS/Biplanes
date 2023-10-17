@@ -15,6 +15,8 @@ public:
 	void update(float timePerFrame);
 	void render();
 private:
+	sf::FloatRect getViewBounds();
+
 	sf::RenderWindow mWindow;
 	Player mPlayerController;
 

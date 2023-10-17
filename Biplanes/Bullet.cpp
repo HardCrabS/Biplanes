@@ -9,7 +9,9 @@ void Bullet::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	auto p = getPosition();
 	auto s = getScale();
 
-	target.draw(mSprite);
+	states.transform *= getTransform();
+
+	target.draw(mSprite, states);
 }
 
 void Bullet::update(float deltaTime)

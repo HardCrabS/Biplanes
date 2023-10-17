@@ -9,10 +9,8 @@ Game::Game() : mWindow(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), "Biplanes")
 	mBulletTexture.loadFromFile("./Assets/bullet.png");
 	mBGTexture.loadFromFile("./Assets/background.png");
 
-	//auto playerPlane = std::make_shared<Plane>(mPlaneTexture, &mBulletTexture, mWindow.getView().getSize());
 	auto playerPlane = SceneManager::createEntity<Plane>(mPlaneTexture, &mBulletTexture, mWindow.getView().getSize());
 	mPlayerController.setPlane(playerPlane);
-	//SceneManager::get().addEntity(playerPlane);
 
 	mBGSprite = sf::Sprite(mBGTexture);
 	auto size = mBGTexture.getSize();
@@ -55,7 +53,8 @@ void Game::update(float timePerFrame)
 
 	for (auto entity : SceneManager::get().getEntities())
 	{
-		auto entityPos = entity->getPosition();
+		std::cout << getViewBounds().intersects(entity->getBoundingRect()) << "\n";
+		/*auto entityPos = entity->getPosition();
 		if (entityPos.x > mWindow.getView().getSize().x)
 		{
 			entity->setPosition(0, entityPos.y);
@@ -63,7 +62,7 @@ void Game::update(float timePerFrame)
 		else if (entityPos.x < 0)
 		{
 			entity->setPosition(mWindow.getView().getSize().x, entityPos.y);
-		}
+		}*/
 	}
 }
 
@@ -76,4 +75,10 @@ void Game::render()
 		mWindow.draw(*entity);
 	}
 	mWindow.display();
+}
+
+sf::FloatRect Game::getViewBounds()
+{
+	auto view = mWindow.getView();
+	return sf::FloatRect(view.getCenter() - view.getSize() / 2.f, view.getSize());
 }
