@@ -8,7 +8,7 @@ class Bullet : public Entity
 public:
 	Bullet(sf::Texture& texture, sf::Vector2f direction);
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-	void update(float deltaTime);
+	void update(float timePerFrame);
 
 private:
 	sf::Sprite mSprite;

@@ -18,7 +18,7 @@ void Player::update(float fixedTime)
 	}
 }
 
-void Player::setPlane(std::shared_ptr<Plane> plane)
+void Player::setPlane(Plane* plane)
 {
 	mPlane = plane;
 }

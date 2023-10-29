@@ -5,9 +5,9 @@
 class Player
 {
 public:
-	Player() {}
+	Player() : mPlane() {}
 	void update(float fixedTime);
-	void setPlane(std::shared_ptr<Plane> plane);
+	void setPlane(Plane* plane);
 private:
-	std::shared_ptr<Plane> mPlane;
+	Plane* mPlane;
 };

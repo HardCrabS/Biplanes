@@ -14,7 +14,8 @@ void Bullet::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	target.draw(mSprite, states);
 }
 
-void Bullet::update(float deltaTime)
+void Bullet::update(float timePerFrame)
 {
-	move(mDirection * mSpeed * deltaTime);
+	Entity::update(timePerFrame);
+	move(mDirection * mSpeed * timePerFrame);
 }

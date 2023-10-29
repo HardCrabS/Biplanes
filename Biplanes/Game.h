@@ -25,6 +25,8 @@ private:
 	sf::Texture mBulletTexture;
 
 	sf::Sprite mBGSprite;
+
+	std::unique_ptr<Entity> mSceneRoot;
 };
 
 

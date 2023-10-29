@@ -1,7 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "Game.h"
-#include "SceneManager.h"
 
 Game::Game() : mWindow(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), "Biplanes")
 {
@@ -9,8 +8,10 @@ Game::Game() : mWindow(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), "Biplanes")
 	mBulletTexture.loadFromFile("./Assets/bullet.png");
 	mBGTexture.loadFromFile("./Assets/background.png");
 
-	auto playerPlane = SceneManager::createEntity<Plane>(mPlaneTexture, &mBulletTexture, mWindow.getView().getSize());
-	mPlayerController.setPlane(playerPlane);
+	mSceneRoot = std::make_unique<Entity>();
+	std::unique_ptr<Plane> playerPlane = std::make_unique<Plane>(mPlaneTexture, &mBulletTexture, mWindow.getView().getSize());
+	mPlayerController.setPlane(playerPlane.get());
+	mSceneRoot->addChild(std::move(playerPlane));
 
 	mBGSprite = sf::Sprite(mBGTexture);
 	auto size = mBGTexture.getSize();
@@ -49,31 +50,14 @@ void Game::handleEvents()
 void Game::update(float timePerFrame)
 {
 	mPlayerController.update(timePerFrame);
-	SceneManager::get().update(timePerFrame);
-
-	for (auto entity : SceneManager::get().getEntities())
-	{
-		std::cout << getViewBounds().intersects(entity->getBoundingRect()) << "\n";
-		/*auto entityPos = entity->getPosition();
-		if (entityPos.x > mWindow.getView().getSize().x)
-		{
-			entity->setPosition(0, entityPos.y);
-		}
-		else if (entityPos.x < 0)
-		{
-			entity->setPosition(mWindow.getView().getSize().x, entityPos.y);
-		}*/
-	}
+	mSceneRoot->update(timePerFrame);
 }
 
 void Game::render()
 {
 	mWindow.clear();
 	mWindow.draw(mBGSprite);
-	for (auto entity : SceneManager::get().getEntities())
-	{
-		mWindow.draw(*entity);
-	}
+	mWindow.draw(*mSceneRoot);
 	mWindow.display();
 }
 
