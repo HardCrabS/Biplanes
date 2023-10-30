@@ -11,7 +11,6 @@ public:
 	void update(float timePerFrame);
 
 private:
-	sf::Sprite mSprite;
 	sf::Vector2f mDirection;
 	float mSpeed = 1000.f;
 };

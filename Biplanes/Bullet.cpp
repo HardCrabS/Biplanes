@@ -1,6 +1,6 @@
 #include "Bullet.h"
 
-Bullet::Bullet(sf::Texture& texture, sf::Vector2f direction) : mSprite(texture), mDirection(direction)
+Bullet::Bullet(sf::Texture& texture, sf::Vector2f direction) : Entity(texture), mDirection(direction)
 {
 }
 
@@ -11,7 +11,8 @@ void Bullet::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 	states.transform *= getTransform();
 
-	target.draw(mSprite, states);
+	target.draw(m_mainSprite, states);
+	drawBoundingBox(target, states);
 }
 
 void Bullet::update(float timePerFrame)

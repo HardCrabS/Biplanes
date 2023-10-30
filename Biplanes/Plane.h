@@ -28,7 +28,6 @@ class Plane : public Entity
 public:
 	Plane() : mVelocity() {};
 	Plane(const sf::Texture& planeTexture, sf::Texture* bulletTexture, const sf::Vector2f& viewSize);
-	virtual sf::FloatRect getBoundingRect() const;
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	void update(float timePerFrame);
 	void gas(bool isPressed);
@@ -38,7 +37,6 @@ private:
 	void processMovement(float timePerFrame);
 	bool isShootAllowed();
 
-	sf::Sprite mPlaneSprite;
 	sf::Texture* mBulletTexture;
 	sf::Vector2f mViewSize;
 

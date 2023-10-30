@@ -4,13 +4,13 @@
 #include <iostream>
 
 Plane::Plane(const sf::Texture& planeTexture, sf::Texture* bulletTexture, const sf::Vector2f& viewSize)
-	: mPlaneSprite(planeTexture)
+	: Entity(planeTexture)
 	, mBulletTexture(bulletTexture)
 	, mViewSize(viewSize)
 {
 	setScale(sf::Vector2f(1.f, 1.f) * 3.f);
-	sf::FloatRect bounds = mPlaneSprite.getLocalBounds();
-	mPlaneSprite.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
+	sf::FloatRect bounds = m_mainSprite.getLocalBounds();
+	m_mainSprite.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
 	mVelocity = SPEED;
 	mVelocityDirection = sf::Vector2f(0.f, 0.f);
 	setPosition(100.f, 100.f);
@@ -18,17 +18,12 @@ Plane::Plane(const sf::Texture& planeTexture, sf::Texture* bulletTexture, const 
 	mGasDirection = sf::Vector2f(cos(radians), sin(radians));
 }
 
-sf::FloatRect Plane::getBoundingRect() const
-{
-	return getTransform().transformRect(mPlaneSprite.getGlobalBounds());
-}
-
 void Plane::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	Entity::draw(target, states);
 
 	states.transform *= getTransform();
-	target.draw(mPlaneSprite, states);
+	target.draw(m_mainSprite, states);
 
 	drawBoundingBox(target, states);
 }
@@ -88,6 +83,7 @@ void Plane::shoot()
 	auto bullet = std::make_unique<Bullet>(*mBulletTexture, mGasDirection);
 	bullet->setPosition(getPosition());
 	bullet->setScale(sf::Vector2f(1.f, 1.f) * 5.f);
+	bullet->destroy(0.4f);
 	this->addChild(std::move(bullet));
 
 	mLastShotClock.restart();
