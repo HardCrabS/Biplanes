@@ -2,6 +2,7 @@
 #include <iostream>
 #include <algorithm>
 #include "Game.h"
+#include "Constants.h"
 
 Game::Game() : mWindow(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), "Biplanes")
 {
@@ -11,9 +12,9 @@ Game::Game() : mWindow(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), "Biplanes")
 	mBGTexture.loadFromFile("./Assets/background.png");
 
 	mSceneRoot = std::make_unique<Entity>();
-	std::unique_ptr<Plane> playerPlane = std::make_unique<Plane>(mPlaneTexture, &mBulletTexture, mWindow.getView().getSize());
+	std::unique_ptr<Plane> playerPlane = std::make_unique<Plane>(mPlaneTexture, &mBulletTexture, mWindow.getView().getSize(), Team::Red);
 	mPlayerController.setPlane(playerPlane.get());
-	std::unique_ptr<Plane> enemyPlane = std::make_unique<Plane>(mEnemyPlaneTexture, &mBulletTexture, mWindow.getView().getSize());
+	std::unique_ptr<Plane> enemyPlane = std::make_unique<Plane>(mEnemyPlaneTexture, &mBulletTexture, mWindow.getView().getSize(), Team::Blue);
 	enemyPlane->setPosition(sf::Vector2f(600.f, 100.f));
 	mSceneRoot->addChild(std::move(playerPlane));
 	mSceneRoot->addChild(std::move(enemyPlane));
@@ -84,19 +85,6 @@ void Game::handleCollisions()
 	{
 		pair.first->onCollisionEnter(pair.second);
 		pair.second->onCollisionEnter(pair.first);
-	}
-
-	// call onCollisionExit on entities which stopped colliding this frame
-	std::set<std::pair<Entity*, Entity*>> exitCollisions;
-	std::set_difference(
-		mPrevFrameCollisionPairs.begin(), mPrevFrameCollisionPairs.end(),
-		mCollisionPairs.begin(), mCollisionPairs.end(),
-		std::inserter(exitCollisions, exitCollisions.begin())
-	);
-	for (const std::pair<Entity*, Entity*>& pair : exitCollisions)
-	{
-		pair.first->onCollisionExit(pair.second);
-		pair.second->onCollisionExit(pair.first);
 	}
 
 	mPrevFrameCollisionPairs = mCollisionPairs;

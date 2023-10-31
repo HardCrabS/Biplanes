@@ -3,7 +3,7 @@
 
 void Entity::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	for (const std::unique_ptr<Entity>& child : m_children)
+	for (const std::unique_ptr<Entity>& child : mChildren)
 	{
 		child->draw(target, states);
 	}
@@ -11,7 +11,7 @@ void Entity::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 void Entity::update(float timePerFrame)
 {
-	for (std::unique_ptr<Entity>& child : m_children)
+	for (std::unique_ptr<Entity>& child : mChildren)
 	{
 		child->update(timePerFrame);
 	}
@@ -21,7 +21,7 @@ void Entity::update(float timePerFrame)
 
 void Entity::addChild(std::unique_ptr<Entity> child)
 {
-	m_children.push_back(std::move(child));
+	mChildren.push_back(std::move(child));
 }
 
 void Entity::destroy(float duration)
@@ -31,15 +31,19 @@ void Entity::destroy(float duration)
 
 void Entity::removeDestroyed()
 {
-	m_children.erase(
-		std::remove_if(
-			m_children.begin(),
-			m_children.end(),
-			[](std::unique_ptr<Entity>& e) { return e->getState() == EntityState::Destroyed;}
-		),
-		m_children.end()
+	auto destroyedStart = std::remove_if(
+		mChildren.begin(),
+		mChildren.end(),
+		[](std::unique_ptr<Entity>& e) { return e->getState() == EntityState::Destroyed;}
 	);
-	for (std::unique_ptr<Entity>& child : m_children) {
+	int removedEntitiesCount = std::distance(destroyedStart, mChildren.end());
+	if (removedEntitiesCount > 0)
+		std::cout << "Removed entities: " << removedEntitiesCount << "\n";
+	mChildren.erase(
+		destroyedStart,
+		mChildren.end()
+	);
+	for (std::unique_ptr<Entity>& child : mChildren) {
 		child->removeDestroyed();
 	}
 }
@@ -63,7 +67,7 @@ void Entity::drawBoundingBox(sf::RenderTarget& target, sf::RenderStates states) 
 
 sf::FloatRect Entity::getBoundingRect() const
 {
-	return getTransform().transformRect(m_mainSprite.getGlobalBounds());
+	return getTransform().transformRect(mMainSprite.getGlobalBounds());
 }
 
 bool Entity::isCollisionBetween(Entity& le, Entity& re)
@@ -71,29 +75,26 @@ bool Entity::isCollisionBetween(Entity& le, Entity& re)
 	return le.getBoundingRect().intersects(re.getBoundingRect());
 }
 
+void Entity::onCollisionEnter(Entity* collision)
+{
+	std::cout << "onCollisionEnter: " + mName + "\n";
+}
+
 void Entity::fillCollisionPairs(Entity& entityRoot, std::set<std::pair<Entity*, Entity*>>& collisionPairs)
 {
 	checkCollisionWithEveryEntity(entityRoot, collisionPairs);
 
-	for (const auto& child : entityRoot.m_children)
+	for (const auto& child : entityRoot.mChildren)
 		fillCollisionPairs(*child, collisionPairs);
-}
-
-void Entity::onCollisionEnter(Entity* collision)
-{
-	std::cout << "onCollisionEnter\n";
-}
-
-void Entity::onCollisionExit(Entity* collision)
-{
-	std::cout << "onCollisionExit\n";
 }
 
 void Entity::checkCollisionWithEveryEntity(Entity& entityToCheck, std::set<std::pair<Entity*, Entity*>>& collisionPairs)
 {
-	if (this != &entityToCheck && this->collidesWith(entityToCheck))
+	if (this != &entityToCheck && this->collidesWith(entityToCheck) && 
+		mState != EntityState::Destroyed && entityToCheck.mState != EntityState::Destroyed && 
+		mTeam != entityToCheck.mTeam)
 		collisionPairs.insert(std::minmax(this, &entityToCheck));
 
-	for (const auto& child : m_children)
+	for (const auto& child : mChildren)
 		child->checkCollisionWithEveryEntity(entityToCheck, collisionPairs);
 }

@@ -3,19 +3,21 @@
 
 #include <iostream>
 
-Plane::Plane(const sf::Texture& planeTexture, sf::Texture* bulletTexture, const sf::Vector2f& viewSize)
-	: Entity(planeTexture)
+Plane::Plane(const sf::Texture& planeTexture, sf::Texture* bulletTexture, const sf::Vector2f& viewSize, Team team)
+	: Entity(planeTexture, team)
 	, mBulletTexture(bulletTexture)
 	, mViewSize(viewSize)
+	, mCurrHealth(mMaxHealth)
 {
 	setScale(sf::Vector2f(1.f, 1.f) * 3.f);
-	sf::FloatRect bounds = m_mainSprite.getLocalBounds();
-	m_mainSprite.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
+	sf::FloatRect bounds = mMainSprite.getLocalBounds();
+	mMainSprite.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
 	mVelocity = SPEED;
 	mVelocityDirection = sf::Vector2f(0.f, 0.f);
 	setPosition(100.f, 100.f);
 	double radians = getRotation() * 3.14159 / 180;
 	mGasDirection = sf::Vector2f(cos(radians), sin(radians));
+	setName("Plane");
 }
 
 void Plane::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -23,7 +25,7 @@ void Plane::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	Entity::draw(target, states);
 
 	states.transform *= getTransform();
-	target.draw(m_mainSprite, states);
+	target.draw(mMainSprite, states);
 
 	drawBoundingBox(target, states);
 }
@@ -80,11 +82,24 @@ void Plane::shoot()
 	if (!isShootAllowed())
 		return;
 
-	auto bullet = std::make_unique<Bullet>(*mBulletTexture, mGasDirection);
+	auto bullet = std::make_unique<Bullet>(*mBulletTexture, mGasDirection, Team::Red);
 	bullet->setPosition(getPosition());
 	bullet->setScale(sf::Vector2f(1.f, 1.f) * 5.f);
-	bullet->destroy(0.4f);
+	bullet->destroy(2.f);
 	this->addChild(std::move(bullet));
 
 	mLastShotClock.restart();
+}
+
+void Plane::takeDamage()
+{
+	std::cout << "Ouch!\n";
+	mCurrHealth -= 1;
+	if (mCurrHealth <= 0)
+		die();
+}
+
+void Plane::die()
+{
+	destroy();
 }
