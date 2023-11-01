@@ -1,4 +1,5 @@
 #include "Bullet.h"
+#include "Utils.h"
 
 Bullet::Bullet(sf::Texture& texture, sf::Vector2f direction, Team team) : Entity(texture, team), mDirection(direction)
 {
@@ -25,4 +26,5 @@ void Bullet::update(float timePerFrame)
 void Bullet::onCollisionEnter(Entity* collision)
 {
 	collision->takeDamage();
+	LogInfo(teamToString(mTeam) + " bullet hit " + teamToString(collision->getTeam()) + " entity!")
 }

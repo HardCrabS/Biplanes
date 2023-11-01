@@ -2,6 +2,7 @@
 
 enum class Team
 {
+	None,
 	Blue,
 	Red
 };

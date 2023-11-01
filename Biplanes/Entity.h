@@ -5,6 +5,7 @@
 #include <set>
 #include <string>
 #include <SFML/Graphics.hpp>
+#include "Logger.h"
 #include "Constants.h"
 
 
@@ -17,8 +18,8 @@ enum class EntityState
 class Entity : public sf::Transformable, public sf::Drawable
 {
 public:
-	Entity() {}
-	Entity(const sf::Texture& texture, Team team) : mMainSprite(texture), mTeam(team) {}
+	Entity();
+	Entity(const sf::Texture& texture, Team team);
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	virtual void update(float timePerFrame);
 	void addChild(std::unique_ptr<Entity> child);
@@ -26,6 +27,7 @@ public:
 	void removeDestroyed();
 	void setState(EntityState state) { mState = state; }
 	EntityState getState() { return mState; }
+	Team getTeam() { return mTeam; }
 	void setName(std::string name) { mName = std::move(name); }
 	virtual void takeDamage() {};
 
@@ -42,6 +44,7 @@ private:
 protected:
 	sf::Sprite mMainSprite;
 	Team mTeam;
+	DECLARE_LOGGER
 private:
 	std::vector<std::unique_ptr<Entity>> mChildren;
 	EntityState mState = EntityState::Active;

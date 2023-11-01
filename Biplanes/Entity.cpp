@@ -1,5 +1,14 @@
 #include "Entity.h"
-#include <iostream>
+
+Entity::Entity() : mTeam(Team::None)
+{
+	DEFINE_LOGGER("main")
+}
+
+Entity::Entity(const sf::Texture& texture, Team team) : mMainSprite(texture), mTeam(team)
+{
+	DEFINE_LOGGER("main")
+}
 
 void Entity::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
@@ -34,15 +43,18 @@ void Entity::removeDestroyed()
 	auto destroyedStart = std::remove_if(
 		mChildren.begin(),
 		mChildren.end(),
-		[](std::unique_ptr<Entity>& e) { return e->getState() == EntityState::Destroyed;}
+		[](std::unique_ptr<Entity>& e) { return e->getState() == EntityState::Destroyed; }
 	);
 	int removedEntitiesCount = std::distance(destroyedStart, mChildren.end());
 	if (removedEntitiesCount > 0)
-		std::cout << "Removed entities: " << removedEntitiesCount << "\n";
-	mChildren.erase(
-		destroyedStart,
-		mChildren.end()
-	);
+	{
+		mChildren.erase(
+			destroyedStart,
+			mChildren.end()
+		);
+
+		LogInfo("Removed entities: " + std::to_string(removedEntitiesCount))
+	}
 	for (std::unique_ptr<Entity>& child : mChildren) {
 		child->removeDestroyed();
 	}
@@ -77,7 +89,7 @@ bool Entity::isCollisionBetween(Entity& le, Entity& re)
 
 void Entity::onCollisionEnter(Entity* collision)
 {
-	std::cout << "onCollisionEnter: " + mName + "\n";
+	LogInfo("onCollisionEnter: " + mName)
 }
 
 void Entity::fillCollisionPairs(Entity& entityRoot, std::set<std::pair<Entity*, Entity*>>& collisionPairs)

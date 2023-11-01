@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "Logger.h"
 #include "Player.h"
 #include "Plane.h"
 #include <set>
@@ -18,6 +19,9 @@ private:
 	void render();
 	void handleCollisions();
 	sf::FloatRect getViewBounds();
+
+	Logger mLogger;
+	DECLARE_LOGGER
 
 	sf::RenderWindow mWindow;
 	Player mPlayerController;

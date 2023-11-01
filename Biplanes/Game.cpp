@@ -1,11 +1,12 @@
 #include <SFML/Graphics.hpp>
-#include <iostream>
 #include <algorithm>
 #include "Game.h"
 #include "Constants.h"
 
 Game::Game() : mWindow(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), "Biplanes")
 {
+	DEFINE_LOGGER("main")
+	LogInfo("Game Start!");
 	mPlaneTexture.loadFromFile("./Assets/redPlane.png");
 	mEnemyPlaneTexture.loadFromFile("./Assets/bluePlane.png");
 	mBulletTexture.loadFromFile("./Assets/bullet.png");

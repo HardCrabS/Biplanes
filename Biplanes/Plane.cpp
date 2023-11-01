@@ -1,7 +1,6 @@
 #include "Plane.h"
 #include "MathUtilities.inl"
 
-#include <iostream>
 
 Plane::Plane(const sf::Texture& planeTexture, sf::Texture* bulletTexture, const sf::Vector2f& viewSize, Team team)
 	: Entity(planeTexture, team)
@@ -93,7 +92,6 @@ void Plane::shoot()
 
 void Plane::takeDamage()
 {
-	std::cout << "Ouch!\n";
 	mCurrHealth -= 1;
 	if (mCurrHealth <= 0)
 		die();
