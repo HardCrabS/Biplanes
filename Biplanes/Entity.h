@@ -29,6 +29,8 @@ public:
 	EntityState getState() { return mState; }
 	Team getTeam() { return mTeam; }
 	void setName(std::string name) { mName = std::move(name); }
+	virtual void clampToBounds(sf::Vector2f bounds);
+	virtual void onOutOfBounds(sf::Vector2f bounds);
 	virtual void takeDamage() {};
 
 	void fillCollisionPairs(Entity& entityRoot, std::set<std::pair<Entity*, Entity*>>& collisionPairs);

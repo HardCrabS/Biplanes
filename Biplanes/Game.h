@@ -26,11 +26,6 @@ private:
 	sf::RenderWindow mWindow;
 	Player mPlayerController;
 
-	sf::Texture mBGTexture;
-	sf::Texture mPlaneTexture;
-	sf::Texture mEnemyPlaneTexture;
-	sf::Texture mBulletTexture;
-
 	sf::Sprite mBGSprite;
 
 	std::unique_ptr<Entity> mSceneRoot;

@@ -2,9 +2,8 @@
 #include "MathUtilities.inl"
 
 
-Plane::Plane(const sf::Texture& planeTexture, sf::Texture* bulletTexture, const sf::Vector2f& viewSize, Team team)
+Plane::Plane(const sf::Texture& planeTexture, const sf::Vector2f& viewSize, Team team)
 	: Entity(planeTexture, team)
-	, mBulletTexture(bulletTexture)
 	, mViewSize(viewSize)
 	, mCurrHealth(mMaxHealth)
 {
@@ -15,7 +14,7 @@ Plane::Plane(const sf::Texture& planeTexture, sf::Texture* bulletTexture, const 
 	mVelocityDirection = sf::Vector2f(0.f, 0.f);
 	setPosition(100.f, 100.f);
 	double radians = getRotation() * 3.14159 / 180;
-	mGasDirection = sf::Vector2f(cos(radians), sin(radians));
+	mGasDirection = sf::Vector2f(1, 0);
 	setName("Plane");
 }
 
@@ -44,8 +43,12 @@ void Plane::gas(bool isPressed)
 void Plane::steer(int direction)
 {
 	rotate(STEER_SPEED_IN_DEGREES * direction);
-	double radians = getRotation() * 3.14159 / 180;
-	mGasDirection = sf::Vector2f(cos(radians), sin(radians));
+	double radians = ((float)STEER_SPEED_IN_DEGREES * direction) * 3.14159 / 180;
+
+	float rotatedX = mGasDirection.x * std::cos(radians) - mGasDirection.y * std::sin(radians);
+	float rotatedY = mGasDirection.x * std::sin(radians) + mGasDirection.y * std::cos(radians);
+
+	mGasDirection = sf::Vector2f(rotatedX, rotatedY);
 }
 
 void Plane::processMovement(float timePerFrame)
@@ -81,10 +84,9 @@ void Plane::shoot()
 	if (!isShootAllowed())
 		return;
 
-	auto bullet = std::make_unique<Bullet>(*mBulletTexture, mGasDirection, Team::Red);
+	auto bullet = std::make_unique<Bullet>(mGasDirection, Team::Red);
 	bullet->setPosition(getPosition());
 	bullet->setScale(sf::Vector2f(1.f, 1.f) * 5.f);
-	bullet->destroy(2.f);
 	this->addChild(std::move(bullet));
 
 	mLastShotClock.restart();
@@ -100,4 +102,12 @@ void Plane::takeDamage()
 void Plane::die()
 {
 	destroy();
+}
+
+void Plane::mirror()
+{
+	auto mirroredScale = getScale();
+	mirroredScale.x *= -1;
+	setScale(mirroredScale);
+	mGasDirection.x *= -1;
 }

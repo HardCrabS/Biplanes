@@ -1,28 +1,32 @@
 #include <SFML/Graphics.hpp>
 #include <algorithm>
 #include "Game.h"
+#include "ResourcesManager.h"
 #include "Constants.h"
 
 Game::Game() : mWindow(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), "Biplanes")
 {
 	DEFINE_LOGGER("main")
 	LogInfo("Game Start!");
-	mPlaneTexture.loadFromFile("./Assets/redPlane.png");
-	mEnemyPlaneTexture.loadFromFile("./Assets/bluePlane.png");
-	mBulletTexture.loadFromFile("./Assets/bullet.png");
-	mBGTexture.loadFromFile("./Assets/background.png");
+
+	ResourcesManager::getInstance().load();
 
 	mSceneRoot = std::make_unique<Entity>();
-	std::unique_ptr<Plane> playerPlane = std::make_unique<Plane>(mPlaneTexture, &mBulletTexture, mWindow.getView().getSize(), Team::Red);
+	std::unique_ptr<Plane> playerPlane = std::make_unique<Plane>(
+		ResourcesManager::getInstance().getTexture(ResourceID::BluePlane), mWindow.getView().getSize(), Team::Red
+	);
 	mPlayerController.setPlane(playerPlane.get());
-	std::unique_ptr<Plane> enemyPlane = std::make_unique<Plane>(mEnemyPlaneTexture, &mBulletTexture, mWindow.getView().getSize(), Team::Blue);
+	std::unique_ptr<Plane> enemyPlane = std::make_unique<Plane>(
+		ResourcesManager::getInstance().getTexture(ResourceID::RedPlane), mWindow.getView().getSize(), Team::Blue
+	);
+	enemyPlane->mirror();
 	enemyPlane->setPosition(sf::Vector2f(600.f, 100.f));
 	mSceneRoot->addChild(std::move(playerPlane));
 	mSceneRoot->addChild(std::move(enemyPlane));
 
-	mBGSprite = sf::Sprite(mBGTexture);
-	auto size = mBGTexture.getSize();
-	mBGSprite.setScale(sf::Vector2f(WINDOW_SIZE.x / size.x, WINDOW_SIZE.y / size.y));
+	mBGSprite = sf::Sprite(ResourcesManager::getInstance().getTexture(ResourceID::Background));
+	auto texture = mBGSprite.getTexture();
+	mBGSprite.setScale(sf::Vector2f(WINDOW_SIZE.x / texture->getSize().x, WINDOW_SIZE.y / texture->getSize().y));
 }
 
 void Game::run()
@@ -60,6 +64,7 @@ void Game::update(float timePerFrame)
 
 	mPlayerController.update(timePerFrame);
 	mSceneRoot->update(timePerFrame);
+	mSceneRoot->clampToBounds(sf::Vector2f(WINDOW_SIZE.x, WINDOW_SIZE.y));
 }
 
 void Game::render()

@@ -5,7 +5,7 @@
 #include "Bullet.h"
 #include "Constants.h"
 
-#define MANUAL_VELOCITY
+//#define MANUAL_VELOCITY
 
 #ifdef MANUAL_VELOCITY
 	const float MAX_SPEED = 500.f;
@@ -15,7 +15,7 @@
 	const float GRAVITY = 0.f;
 	const sf::Vector2f GRAVITY_DIR = sf::Vector2f(0.f, 1.f);
 #else
-	const float MAX_SPEED = 500.f;
+	const float MAX_SPEED = 400.f;
 	const float SPEED = 200.f;
 	const float MASS = 23.f;
 	const float STEER_SPEED_IN_DEGREES = 7.f;
@@ -27,7 +27,7 @@ class Plane : public Entity
 {
 public:
 	Plane() : mVelocity() {};
-	Plane(const sf::Texture& planeTexture, sf::Texture* bulletTexture, const sf::Vector2f& viewSize, Team team);
+	Plane(const sf::Texture& planeTexture, const sf::Vector2f& viewSize, Team team);
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	void update(float timePerFrame);
 	void gas(bool isPressed);
@@ -35,6 +35,7 @@ public:
 	void shoot();
 	virtual void takeDamage();
 	void die();
+	void mirror();
 private:
 	void processMovement(float timePerFrame);
 	bool isShootAllowed();

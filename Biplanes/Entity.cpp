@@ -92,6 +92,25 @@ void Entity::onCollisionEnter(Entity* collision)
 	LogInfo("onCollisionEnter: " + mName)
 }
 
+void Entity::clampToBounds(sf::Vector2f bounds)
+{
+	auto pos = getPosition();
+	if (pos.x < 0 || pos.y < 0 || pos.x > bounds.x || pos.y > bounds.y)
+		onOutOfBounds(bounds);
+	for (const auto& child : mChildren) {
+		child->clampToBounds(bounds);
+	}
+}
+
+void Entity::onOutOfBounds(sf::Vector2f bounds)
+{
+	LogInfo("Out of bounds!");
+	auto pos = getPosition();
+	float x = pos.x < 0 ? bounds.x : pos.x > bounds.x ? 0 : pos.x;
+	float y = pos.y < 0 ? bounds.y : pos.y > bounds.y ? 0 : pos.y;
+	setPosition(x, y);
+}
+
 void Entity::fillCollisionPairs(Entity& entityRoot, std::set<std::pair<Entity*, Entity*>>& collisionPairs)
 {
 	checkCollisionWithEveryEntity(entityRoot, collisionPairs);

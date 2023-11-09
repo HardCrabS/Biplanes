@@ -7,10 +7,11 @@
 class Bullet : public Entity
 {
 public:
-	Bullet(sf::Texture& texture, sf::Vector2f direction, Team team);
+	Bullet(sf::Vector2f direction, Team team);
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	void update(float timePerFrame);
 	virtual void onCollisionEnter(Entity* collision);
+	void onOutOfBounds(sf::Vector2f bounds) override;
 
 private:
 	sf::Vector2f mDirection;
