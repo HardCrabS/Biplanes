@@ -13,12 +13,21 @@ void Player::update(float fixedTime)
 	if (mPlane == nullptr)
 		return;
 
-	//if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-	//	mPlane->gas(true);
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-		mPlane->brake();
-	else
+	if (mPlane->isHadTakenOff())
+	{
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+			mPlane->brake();
+		else
+			mPlane->gas();
+	}
+	else if (mTakeOffInitiated) {
 		mPlane->gas();
+	}
+	else {
+		// wait for the first W press
+		mTakeOffInitiated = sf::Keyboard::isKeyPressed(sf::Keyboard::W);
+		return;
+	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 		mPlane->steer(-1);
@@ -47,6 +56,7 @@ void Player::onPlaneDestroyed(const Event& event)
 	if (mPlane == entityEvent.entity) {
 		LogInfo("[Player] Plane is destroyed.")
 		mPlane = nullptr;
+		mTakeOffInitiated = false;
 	}
 }
 

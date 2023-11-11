@@ -6,3 +6,5 @@ enum class Team
 	Blue,
 	Red
 };
+
+const float GROUND_LEVEL = 410.f;

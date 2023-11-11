@@ -6,22 +6,12 @@
 #include "Constants.h"
 #include "DamageEffects.h"
 
-//#define MANUAL_VELOCITY
 
-#ifdef MANUAL_VELOCITY
-	const float MAX_SPEED = 500.f;
-	const float SPEED = 0.f;
-	const float STEER_SPEED_IN_DEGREES = 7.f;
-	const float GRAVITY = 0.f;
-	const sf::Vector2f GRAVITY_DIR = sf::Vector2f(0.f, 1.f);
-#else
-	const float MAX_SPEED = 400.f;
-	const float SPEED = 200.f;
-	const float ACCELERATION = 19.f;
-	const float STEER_SPEED_IN_DEGREES = 7.f;
-	const float GRAVITY = 30.f;
-	const sf::Vector2f GRAVITY_DIR = sf::Vector2f(0.f, 1.f);
-#endif
+const float MAX_SPEED = 400.f;
+const float ACCELERATION = 19.f;
+const float STEER_SPEED_IN_DEGREES = 7.f;
+const float GRAVITY = 30.f;
+const sf::Vector2f GRAVITY_DIR = sf::Vector2f(0.f, 1.f);
 
 class Plane : public Entity
 {
@@ -34,12 +24,14 @@ public:
 	void brake();
 	void steer(int direction);
 	void shoot();
+	bool isHadTakenOff() { return mHadTakenOff; }
 	void onCollisionEnter(Entity* collision) override;
 	virtual void takeDamage();
-	void die();
 	void mirror();
 	sf::Vector2f getFaceDirection() { return mGasDirection; }
 private:
+	void die();
+	bool isGrounded();
 	void processMovement(float timePerFrame);
 	bool isShootAllowed();
 
@@ -49,6 +41,7 @@ private:
 	float mVelocity;
 	sf::Vector2f mGasDirection;
 	sf::Vector2f mVelocityDirection;
+	bool mHadTakenOff = false;
 
 	const int mMaxHealth = 3;
 	int mCurrHealth;

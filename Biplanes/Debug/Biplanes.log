@@ -45,10 +45,10 @@ C:\Users\slava\source\repos\Biplanes\Biplanes\src\Game.cpp(72,52): warning C4244
 C:\Users\slava\source\repos\Biplanes\Biplanes\src\Game.cpp(72,52): warning C4244:             T=float
 C:\Users\slava\source\repos\Biplanes\Biplanes\src\Game.cpp(72,52): warning C4244:         ]
 C:\Users\slava\source\repos\Biplanes\Biplanes\src\Plane.cpp(16,9): warning C4189: 'radians': local variable is initialized but not referenced
-C:\Users\slava\source\repos\Biplanes\Biplanes\src\Plane.cpp(56,17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\slava\source\repos\Biplanes\Biplanes\src\Plane.cpp(62,17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   PlaneSpawner.cpp
   Player.cpp
-C:\Users\slava\source\repos\Biplanes\Biplanes\src\Plane.cpp(57,17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\slava\source\repos\Biplanes\Biplanes\src\Plane.cpp(63,17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   Dispatcher.cpp
   Generating Code...
 C:\Users\slava\source\repos\Biplanes\Biplanes\src\Player.cpp(11,27): warning C4100: 'fixedTime': unreferenced formal parameter

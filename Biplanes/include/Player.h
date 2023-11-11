@@ -18,5 +18,6 @@ private:
 private:
 	DECLARE_LOGGER
 	Plane* mPlane;
+	bool mTakeOffInitiated = false;
 	Team mTeam = Team::Blue;
 };

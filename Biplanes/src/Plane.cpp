@@ -10,12 +10,13 @@ Plane::Plane(const sf::Texture& planeTexture, const sf::Vector2f& viewSize, Team
 	setScale(sf::Vector2f(1.f, 1.f) * 3.f);
 	sf::FloatRect bounds = mMainSprite.getLocalBounds();
 	mMainSprite.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
-	mVelocity = SPEED;
+	mVelocity = 0;
 	mVelocityDirection = sf::Vector2f(0.f, 0.f);
 	setPosition(100.f, 100.f);
 	double radians = getRotation() * 3.14159 / 180;
 	mGasDirection = sf::Vector2f(1, 0);
 	mDamageEffects = DamageEffects(this);
+	mHadTakenOff = false;
 	setTag("Plane");
 }
 
@@ -36,6 +37,11 @@ void Plane::update(float timePerFrame)
 	mDamageEffects.setPosition(getPosition());
 	mDamageEffects.update(timePerFrame);
 	processMovement(timePerFrame);
+
+	if (!isGrounded())
+		mHadTakenOff = true;
+	if (getPosition().y > GROUND_LEVEL + 5.f)
+		die();
 }
 
 void Plane::gas()
@@ -65,7 +71,6 @@ void Plane::processMovement(float timePerFrame)
 	{
 		mVelocityDirection = GRAVITY_DIR;
 		mAcceleration = -ACCELERATION;
-		//mVelocity = -MAX_SPEED;
 	}
 
 	move(mVelocityDirection * abs(mVelocity) * timePerFrame);
@@ -99,10 +104,14 @@ void Plane::shoot()
 	mLastShotClock.restart();
 }
 
+bool Plane::isGrounded()
+{
+	return abs(getPosition().y - GROUND_LEVEL) < 20.f;
+}
+
 void Plane::onCollisionEnter(Entity* collision)
 {
-	if (collision->getTag() == "ground") {
-		mCurrHealth = 0;
+	if (collision->getTag() == "ground" && mHadTakenOff) {
 		die();
 	}
 }
@@ -117,6 +126,7 @@ void Plane::takeDamage()
 
 void Plane::die()
 {
+	mCurrHealth = 0;
 	auto explosion = std::make_unique<Animation>(ResourcesManager::getInstance().getSequence(ResourceID::Sequence_Explosion), 0.1f);
 	explosion->setPosition(getPosition());
 	explosion->setScale(sf::Vector2f(2, 2));

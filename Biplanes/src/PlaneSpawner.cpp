@@ -6,8 +6,8 @@ PlaneSpawner::PlaneSpawner(const sf::Vector2f& viewSize, Entity* sceneRoot)
 {
 	DEFINE_LOGGER("main")
 
-	mBlueSpawnPos = sf::Vector2f(100, 100);
-	mRedSpawnPos = sf::Vector2f(600.f, 200.f);
+	mBlueSpawnPos = sf::Vector2f(100, 410);
+	mRedSpawnPos = sf::Vector2f(600.f, 100.f);
 
 	Dispatcher::subscribe(EventID::EntityDestroyed, std::bind(&PlaneSpawner::onPlaneDestroyed, *this, std::placeholders::_1));
 }
@@ -27,18 +27,6 @@ void PlaneSpawner::spawnPlane(Team team)
 
 	Dispatcher::notify(BoardPlaneEvent(plane.get()));
 	mSceneRoot->addChild(std::move(plane));
-
-	//mPlayerController.setPlane(playerPlane.get());
-
-	//std::unique_ptr<Plane> enemyPlane = std::make_unique<Plane>(
-	//	ResourcesManager::getInstance().getTexture(ResourceID::RedPlane), mViewSize, team
-	//	);
-	//enemyPlane->setParent(mSceneRoot);
-	//enemyPlane->mirror();
-	//enemyPlane->setPosition(sf::Vector2f(600.f, 200.f));
-	//mAI.setPlayer(&mPlayerController);
-	//mAI.setPlane(enemyPlane.get());
-	//mSceneRoot->addChild(std::move(enemyPlane));
 }
 
 void PlaneSpawner::onPlaneDestroyed(const Event& event)
