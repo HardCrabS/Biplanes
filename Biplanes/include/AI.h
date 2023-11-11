@@ -11,6 +11,7 @@ public:
 	void update(float deltaTime);
 private:
 	void onPlaneDestroyed(const Event& event);
+	void onBoardPlane(const Event& event);
 private:
 	DECLARE_LOGGER
 	Player* mPlayer;

@@ -6,6 +6,7 @@
 #include "AI.h"
 #include "Plane.h"
 #include "Animation.h"
+#include "PlaneSpawner.h"
 
 const sf::Vector2i WINDOW_SIZE = sf::Vector2i(896, 588);
 const sf::Time TIME_PER_FRAME = sf::seconds(1.f / 60.f);
@@ -26,6 +27,7 @@ private:
 	DECLARE_LOGGER
 
 	sf::RenderWindow mWindow;
+	PlaneSpawner mPlaneSpawner;
 	Player mPlayerController;
 	AI mAI;
 

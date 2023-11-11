@@ -2,9 +2,9 @@
 
 void DamageEffects::onHealthChanged(int health)
 {
-	if (mActiveEffect != nullptr) {
-		mActiveEffect->destroy();
-	}
+	//if (mActiveEffect != nullptr) {
+	//	mActiveEffect->destroy();
+	//}
 	if (health == SMOKE_HEALTH) {
 		auto smokeEffect = std::make_unique<SmokeEffect>(this);
 		mActiveEffect = smokeEffect.get();

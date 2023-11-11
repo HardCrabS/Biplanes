@@ -11,15 +11,13 @@
 #ifdef MANUAL_VELOCITY
 	const float MAX_SPEED = 500.f;
 	const float SPEED = 0.f;
-	const float MASS = 0.f;
 	const float STEER_SPEED_IN_DEGREES = 7.f;
 	const float GRAVITY = 0.f;
 	const sf::Vector2f GRAVITY_DIR = sf::Vector2f(0.f, 1.f);
 #else
 	const float MAX_SPEED = 400.f;
 	const float SPEED = 200.f;
-	const float ACCELERATION = 20.f;
-	const float MASS = 23.f;
+	const float ACCELERATION = 19.f;
 	const float STEER_SPEED_IN_DEGREES = 7.f;
 	const float GRAVITY = 30.f;
 	const sf::Vector2f GRAVITY_DIR = sf::Vector2f(0.f, 1.f);

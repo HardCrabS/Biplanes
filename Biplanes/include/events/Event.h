@@ -1,9 +1,11 @@
 #pragma once
 #include "Entity.h"
+#include "Plane.h"
 
 enum class EventID
 {
 	EntityDestroyed,
+	BoardPlane,
 };
 
 class Event
@@ -21,4 +23,15 @@ public:
 		return EventID::EntityDestroyed;
 	}
 	Entity* entity;
+};
+
+class BoardPlaneEvent : public Event
+{
+public:
+	BoardPlaneEvent(Plane* boardedPlane) : plane(boardedPlane) {}
+	EventID getEventID() const override
+	{
+		return EventID::BoardPlane;
+	}
+	Plane* plane;
 };

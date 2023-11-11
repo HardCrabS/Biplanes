@@ -4,8 +4,8 @@
 Player::Player() : mPlane()
 {
 	DEFINE_LOGGER("main")
-	Dispatcher::subscribe(EventID::EntityDestroyed,
-		std::bind(&Player::onPlaneDestroyed, this, std::placeholders::_1));
+	Dispatcher::subscribe(EventID::EntityDestroyed, std::bind(&Player::onPlaneDestroyed, this, std::placeholders::_1));
+	Dispatcher::subscribe(EventID::BoardPlane, std::bind(&Player::onBoardPlane, this, std::placeholders::_1));
 }
 
 void Player::update(float fixedTime)
@@ -43,11 +43,17 @@ sf::Vector2f Player::getPosition()
 
 void Player::onPlaneDestroyed(const Event& event)
 {
-	if (event.getEventID() == EventID::EntityDestroyed) {
-		const EntityDestroyedEvent& entityEvent = static_cast<const EntityDestroyedEvent&>(event);
-		if (mPlane == entityEvent.entity) {
-			LogInfo("[Player] Plane is destroyed.")
-			mPlane = nullptr;
-		}
+	const EntityDestroyedEvent& entityEvent = static_cast<const EntityDestroyedEvent&>(event);
+	if (mPlane == entityEvent.entity) {
+		LogInfo("[Player] Plane is destroyed.")
+		mPlane = nullptr;
+	}
+}
+
+void Player::onBoardPlane(const Event& event)
+{
+	const BoardPlaneEvent& boardEvent = static_cast<const BoardPlaneEvent&>(event);
+	if (boardEvent.plane->getTeam() == mTeam) {
+		mPlane = boardEvent.plane;
 	}
 }

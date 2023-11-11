@@ -64,7 +64,8 @@ void Plane::processMovement(float timePerFrame)
 	if (getPosition().y < 10)
 	{
 		mVelocityDirection = GRAVITY_DIR;
-		mVelocity = -MAX_SPEED;
+		mAcceleration = -ACCELERATION;
+		//mVelocity = -MAX_SPEED;
 	}
 
 	move(mVelocityDirection * abs(mVelocity) * timePerFrame);

@@ -26,23 +26,11 @@ Game::Game() : mWindow(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), "Biplanes")
 	groundEntity->setTag("ground");
 	mSceneRoot->addChild(std::move(groundEntity));
 
-	// planes
-	std::unique_ptr<Plane> playerPlane = std::make_unique<Plane>(
-		ResourcesManager::getInstance().getTexture(ResourceID::BluePlane), mWindow.getView().getSize(), Team::Blue
-	);
-	playerPlane->setParent(mSceneRoot.get());
-	mPlayerController.setPlane(playerPlane.get());
-	mSceneRoot->addChild(std::move(playerPlane));
-
-	std::unique_ptr<Plane> enemyPlane = std::make_unique<Plane>(
-		ResourcesManager::getInstance().getTexture(ResourceID::RedPlane), mWindow.getView().getSize(), Team::Red
-	);
-	enemyPlane->setParent(mSceneRoot.get());
-	enemyPlane->mirror();
-	enemyPlane->setPosition(sf::Vector2f(600.f, 200.f));
 	mAI.setPlayer(&mPlayerController);
-	mAI.setPlane(enemyPlane.get());
-	mSceneRoot->addChild(std::move(enemyPlane));
+
+	mPlaneSpawner = PlaneSpawner(mWindow.getView().getSize(), mSceneRoot.get());
+	mPlaneSpawner.spawnPlane(Team::Blue);
+	mPlaneSpawner.spawnPlane(Team::Red);
 }
 
 void Game::run()

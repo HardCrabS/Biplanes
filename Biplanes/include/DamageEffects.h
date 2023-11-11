@@ -45,7 +45,7 @@ public:
 	}
 private:
 	Entity* mParent;
-	float mSmokeSpawnRate = 0.3f;
+	float mSmokeSpawnRate = 0.2f;
 	float mTimeSinceLastSpawn = 0;
 };
 
