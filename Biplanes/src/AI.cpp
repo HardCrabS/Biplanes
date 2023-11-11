@@ -13,13 +13,15 @@ void AI::update(float deltaTime)
 	if (mPlane == nullptr)
 		return;
 
+	mPlane->gas();
 	sf::Vector2f AItoPlayerDirection = normalized(mPlayer->getPosition() - mPlane->getPosition());
 	sf::Vector2f faceDirection = mPlane->getFaceDirection();
-	float angleBetween = atan2(AItoPlayerDirection.y, AItoPlayerDirection.x) - atan2(faceDirection.y, faceDirection.x);
-	if (abs(angleBetween) > 1) {
-		if (abs(angleBetween) > 0.1f) {
-			mPlane->steer(angleBetween > 0 ? 1 : -1);
-		}
+	float faceAngle = atan2(faceDirection.y, faceDirection.x);
+	float faceAngleInDegrees = faceAngle * 180 / 3.14;
+	float angleBetween = atan2(AItoPlayerDirection.y, AItoPlayerDirection.x) - faceAngle;
+
+	if (abs(angleBetween) > 0.1f) {
+		mPlane->steer(angleBetween > 0 ? 1 : -1);
 	}
 	mPlane->shoot();
 }

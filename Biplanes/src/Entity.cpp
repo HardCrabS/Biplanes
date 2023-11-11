@@ -91,7 +91,7 @@ bool Entity::isCollisionBetween(Entity& le, Entity& re)
 
 void Entity::onCollisionEnter(Entity* collision)
 {
-	LogInfo("onCollisionEnter: " + mName)
+	LogInfo("onCollisionEnter: " + mTag)
 }
 
 void Entity::clampToBounds(sf::Vector2f bounds)

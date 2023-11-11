@@ -16,7 +16,7 @@ Plane::Plane(const sf::Texture& planeTexture, const sf::Vector2f& viewSize, Team
 	double radians = getRotation() * 3.14159 / 180;
 	mGasDirection = sf::Vector2f(1, 0);
 	mDamageEffects = DamageEffects(this);
-	setName("Plane");
+	setTag("Plane");
 }
 
 void Plane::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -38,10 +38,14 @@ void Plane::update(float timePerFrame)
 	processMovement(timePerFrame);
 }
 
-void Plane::gas(bool isPressed)
+void Plane::gas()
 {
-	// toggle velocity, this is for test only
-	mVelocity = isPressed ? MAX_SPEED : 0;
+	mAcceleration = ACCELERATION;
+}
+
+void Plane::brake()
+{
+	mAcceleration = -ACCELERATION;
 }
 
 void Plane::steer(int direction)
@@ -66,15 +70,13 @@ void Plane::processMovement(float timePerFrame)
 	move(mVelocityDirection * abs(mVelocity) * timePerFrame);
 
 	float gasToGravityAngleCos = (mGasDirection.x * GRAVITY_DIR.x + mGasDirection.y * GRAVITY_DIR.y) / (magnitude(mGasDirection) * magnitude(GRAVITY_DIR));
-	mVelocity += SPEED + gasToGravityAngleCos * MASS * GRAVITY;
+	mAcceleration += gasToGravityAngleCos * GRAVITY;
+	mVelocity += mAcceleration;
 
 	mVelocityDirection = mVelocity >= 0 ? mGasDirection : GRAVITY_DIR;
 	mVelocityDirection = normalized(mVelocityDirection);
 
-	if (mVelocity < -MAX_SPEED)
-		mVelocity = -MAX_SPEED;
-	if (mVelocity > MAX_SPEED)
-		mVelocity = MAX_SPEED;
+	mVelocity = clamp(mVelocity, -MAX_SPEED, MAX_SPEED);
 }
 
 bool Plane::isShootAllowed()
@@ -94,6 +96,14 @@ void Plane::shoot()
 	getParent()->addChild(std::move(bullet));
 
 	mLastShotClock.restart();
+}
+
+void Plane::onCollisionEnter(Entity* collision)
+{
+	if (collision->getTag() == "ground") {
+		mCurrHealth = 0;
+		die();
+	}
 }
 
 void Plane::takeDamage()

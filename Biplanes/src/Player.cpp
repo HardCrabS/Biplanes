@@ -13,9 +13,12 @@ void Player::update(float fixedTime)
 	if (mPlane == nullptr)
 		return;
 
-#ifdef MANUAL_VELOCITY
-	mPlane->gas(sf::Keyboard::isKeyPressed(sf::Keyboard::W));
-#endif // MANUAL_VELOCITY
+	//if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+	//	mPlane->gas(true);
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+		mPlane->brake();
+	else
+		mPlane->gas();
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 		mPlane->steer(-1);

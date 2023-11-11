@@ -2,6 +2,7 @@
 #include <algorithm>
 #include "Game.h"
 #include "ResourcesManager.h"
+#include "SpriteEntity.h"
 #include "Constants.h"
 
 
@@ -12,25 +13,36 @@ Game::Game() : mWindow(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), "Biplanes")
 	ResourcesManager::getInstance().load();
 
 	mSceneRoot = std::make_unique<Entity>();
+
+	// setup background sprites
+	mBGSprite = sf::Sprite(ResourcesManager::getInstance().getTexture(ResourceID::Background));
+	auto texture = mBGSprite.getTexture();
+	mBGSprite.setScale(sf::Vector2f(WINDOW_SIZE.x / texture->getSize().x, WINDOW_SIZE.y / texture->getSize().y));
+
+	const sf::Texture* groundTexture = &ResourcesManager::getInstance().getTexture(ResourceID::Ground);
+	auto groundEntity = std::make_unique<SpriteEntity>(*groundTexture);
+	groundEntity->setScale(mBGSprite.getScale());
+	groundEntity->setPosition(0, WINDOW_SIZE.y - groundTexture->getSize().y * mBGSprite.getScale().y);
+	groundEntity->setTag("ground");
+	mSceneRoot->addChild(std::move(groundEntity));
+
+	// planes
 	std::unique_ptr<Plane> playerPlane = std::make_unique<Plane>(
 		ResourcesManager::getInstance().getTexture(ResourceID::BluePlane), mWindow.getView().getSize(), Team::Blue
 	);
 	playerPlane->setParent(mSceneRoot.get());
 	mPlayerController.setPlane(playerPlane.get());
+	mSceneRoot->addChild(std::move(playerPlane));
+
 	std::unique_ptr<Plane> enemyPlane = std::make_unique<Plane>(
 		ResourcesManager::getInstance().getTexture(ResourceID::RedPlane), mWindow.getView().getSize(), Team::Red
 	);
 	enemyPlane->setParent(mSceneRoot.get());
 	enemyPlane->mirror();
-	enemyPlane->setPosition(sf::Vector2f(600.f, 100.f));
+	enemyPlane->setPosition(sf::Vector2f(600.f, 200.f));
 	mAI.setPlayer(&mPlayerController);
 	mAI.setPlane(enemyPlane.get());
-	mSceneRoot->addChild(std::move(playerPlane));
 	mSceneRoot->addChild(std::move(enemyPlane));
-
-	mBGSprite = sf::Sprite(ResourcesManager::getInstance().getTexture(ResourceID::Background));
-	auto texture = mBGSprite.getTexture();
-	mBGSprite.setScale(sf::Vector2f(WINDOW_SIZE.x / texture->getSize().x, WINDOW_SIZE.y / texture->getSize().y));
 }
 
 void Game::run()

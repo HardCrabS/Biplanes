@@ -18,9 +18,10 @@
 #else
 	const float MAX_SPEED = 400.f;
 	const float SPEED = 200.f;
+	const float ACCELERATION = 20.f;
 	const float MASS = 23.f;
 	const float STEER_SPEED_IN_DEGREES = 7.f;
-	const float GRAVITY = 10.f;
+	const float GRAVITY = 30.f;
 	const sf::Vector2f GRAVITY_DIR = sf::Vector2f(0.f, 1.f);
 #endif
 
@@ -31,9 +32,11 @@ public:
 	Plane(const sf::Texture& planeTexture, const sf::Vector2f& viewSize, Team team);
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	void update(float timePerFrame);
-	void gas(bool isPressed);
+	void gas();
+	void brake();
 	void steer(int direction);
 	void shoot();
+	void onCollisionEnter(Entity* collision) override;
 	virtual void takeDamage();
 	void die();
 	void mirror();
@@ -44,6 +47,7 @@ private:
 
 	sf::Vector2f mViewSize;
 
+	float mAcceleration = 0;
 	float mVelocity;
 	sf::Vector2f mGasDirection;
 	sf::Vector2f mVelocityDirection;

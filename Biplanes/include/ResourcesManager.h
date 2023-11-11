@@ -10,6 +10,8 @@ enum class ResourceID
 	BluePlane,
 	Bullet,
 	Background,
+	Ground,
+
 	Sequence_DamageFire,
 	Sequence_DamageSmoke,
 	Sequence_Explosion,

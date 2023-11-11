@@ -1,3 +1,5 @@
 ﻿  AI.cpp
+C:\Users\slava\source\repos\Biplanes\Biplanes\src\AI.cpp(20,27): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
 C:\Users\slava\source\repos\Biplanes\Biplanes\src\AI.cpp(11,23): warning C4100: 'deltaTime': unreferenced formal parameter
+C:\Users\slava\source\repos\Biplanes\Biplanes\src\AI.cpp(20,8): warning C4189: 'faceAngleInDegrees': local variable is initialized but not referenced
   Biplanes.vcxproj -> C:\Users\slava\source\repos\Biplanes\Debug\Biplanes.exe

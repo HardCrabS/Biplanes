@@ -6,6 +6,7 @@ void ResourcesManager::load()
 	mTextures[ResourceID::BluePlane].loadFromFile("./Assets/bluePlane.png");
 	mTextures[ResourceID::Bullet].loadFromFile("./Assets/bullet.png");
 	mTextures[ResourceID::Background].loadFromFile("./Assets/background.png");
+	mTextures[ResourceID::Ground].loadFromFile("./Assets/ground.png");
 
 	loadSequence("./Assets/sequence/DamagedSmoke/", mSequences[ResourceID::Sequence_DamageSmoke]);
 	loadSequence("./Assets/sequence/DamagedFire/", mSequences[ResourceID::Sequence_DamageFire]);

@@ -19,7 +19,7 @@ class Entity : public sf::Transformable, public sf::Drawable
 {
 public:
 	Entity();
-	Entity(const sf::Texture& texture, Team team);
+	Entity(const sf::Texture& texture, Team team = Team::None);
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	virtual void update(float timePerFrame);
 	void addChild(std::unique_ptr<Entity> child);
@@ -30,7 +30,8 @@ public:
 	void setState(EntityState state) { mState = state; }
 	EntityState getState() { return mState; }
 	Team getTeam() { return mTeam; }
-	void setName(std::string name) { mName = std::move(name); }
+	void setTag(std::string name) { mTag = std::move(name); }
+	const std::string& getTag() const { return mTag; }
 	virtual void clampToBounds(sf::Vector2f bounds);
 	virtual void onOutOfBounds(sf::Vector2f bounds);
 	virtual void takeDamage() {};
@@ -53,7 +54,7 @@ private:
 	std::vector<std::unique_ptr<Entity>> mChildren{};
 	Entity* mParent = nullptr;
 	EntityState mState = EntityState::Active;
-	std::string mName;
+	std::string mTag;
 };
 
 class DestroyManager
