@@ -4,23 +4,27 @@
 #include "ResourcesManager.h"
 #include "Constants.h"
 
+
 Game::Game() : mWindow(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), "Biplanes")
 {
 	DEFINE_LOGGER("main")
 	LogInfo("Game Start!");
-
 	ResourcesManager::getInstance().load();
 
 	mSceneRoot = std::make_unique<Entity>();
 	std::unique_ptr<Plane> playerPlane = std::make_unique<Plane>(
-		ResourcesManager::getInstance().getTexture(ResourceID::BluePlane), mWindow.getView().getSize(), Team::Red
+		ResourcesManager::getInstance().getTexture(ResourceID::BluePlane), mWindow.getView().getSize(), Team::Blue
 	);
+	playerPlane->setParent(mSceneRoot.get());
 	mPlayerController.setPlane(playerPlane.get());
 	std::unique_ptr<Plane> enemyPlane = std::make_unique<Plane>(
-		ResourcesManager::getInstance().getTexture(ResourceID::RedPlane), mWindow.getView().getSize(), Team::Blue
+		ResourcesManager::getInstance().getTexture(ResourceID::RedPlane), mWindow.getView().getSize(), Team::Red
 	);
+	enemyPlane->setParent(mSceneRoot.get());
 	enemyPlane->mirror();
 	enemyPlane->setPosition(sf::Vector2f(600.f, 100.f));
+	mAI.setPlayer(&mPlayerController);
+	mAI.setPlane(enemyPlane.get());
 	mSceneRoot->addChild(std::move(playerPlane));
 	mSceneRoot->addChild(std::move(enemyPlane));
 
@@ -63,6 +67,7 @@ void Game::update(float timePerFrame)
 	handleCollisions();
 
 	mPlayerController.update(timePerFrame);
+	mAI.update(timePerFrame);
 	mSceneRoot->update(timePerFrame);
 	mSceneRoot->clampToBounds(sf::Vector2f(WINDOW_SIZE.x, WINDOW_SIZE.y));
 }

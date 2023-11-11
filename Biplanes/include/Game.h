@@ -1,9 +1,11 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "Logger.h"
-#include "Player.h"
-#include "Plane.h"
 #include <set>
+#include "Player.h"
+#include "AI.h"
+#include "Plane.h"
+#include "Animation.h"
 
 const sf::Vector2i WINDOW_SIZE = sf::Vector2i(896, 588);
 const sf::Time TIME_PER_FRAME = sf::seconds(1.f / 60.f);
@@ -25,9 +27,9 @@ private:
 
 	sf::RenderWindow mWindow;
 	Player mPlayerController;
+	AI mAI;
 
 	sf::Sprite mBGSprite;
-
 	std::unique_ptr<Entity> mSceneRoot;
 
 	std::set<std::pair<Entity*, Entity*>> mCollisionPairs;

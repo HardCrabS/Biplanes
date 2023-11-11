@@ -6,8 +6,12 @@
 class Animation : public Entity 
 {
 public:
-	Animation(std::vector<sf::Texture>& textures, float timeBetweenFrames, bool isLooping);
+	Animation() {}
+	Animation(std::vector<sf::Texture>& textures, float timeBetweenFrames, bool isLooping=false);
+	void set(std::vector<sf::Texture>& textures, float timeBetweenFrames, bool isLooping);
+	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	void update(float deltaTime) override;
+	void setMainSprite(sf::Sprite& sprite);
 private:
 	int mCurrentSpriteIndex = 0;
 	float mTimeBetweenFrames = 0;

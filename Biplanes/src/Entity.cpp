@@ -1,4 +1,5 @@
 #include "Entity.h"
+#include "events/Dispatcher.h"
 
 Entity::Entity() : mTeam(Team::None)
 {
@@ -20,9 +21,9 @@ void Entity::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 void Entity::update(float timePerFrame)
 {
-	for (std::unique_ptr<Entity>& child : mChildren)
+	for (size_t i = 0; i < mChildren.size(); i++)
 	{
-		child->update(timePerFrame);
+		mChildren[i]->update(timePerFrame);
 	}
 
 	removeDestroyed();
@@ -35,6 +36,7 @@ void Entity::addChild(std::unique_ptr<Entity> child)
 
 void Entity::destroy(float duration)
 {
+	Dispatcher::notify(EntityDestroyedEvent(this));
 	DestroyManager::destroy(this, duration);
 }
 

@@ -4,6 +4,7 @@
 #include "Entity.h"
 #include "Bullet.h"
 #include "Constants.h"
+#include "DamageEffects.h"
 
 //#define MANUAL_VELOCITY
 
@@ -36,11 +37,11 @@ public:
 	virtual void takeDamage();
 	void die();
 	void mirror();
+	sf::Vector2f getFaceDirection() { return mGasDirection; }
 private:
 	void processMovement(float timePerFrame);
 	bool isShootAllowed();
 
-	sf::Texture* mBulletTexture;
 	sf::Vector2f mViewSize;
 
 	float mVelocity;
@@ -51,4 +52,5 @@ private:
 	int mCurrHealth;
 	sf::Clock mLastShotClock;
 	float mTimePerShot = 0.5f;
+	DamageEffects mDamageEffects;
 };

@@ -23,6 +23,8 @@ public:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	virtual void update(float timePerFrame);
 	void addChild(std::unique_ptr<Entity> child);
+	void setParent(Entity* parent) { mParent = parent; }
+	Entity* getParent() { return mParent != nullptr ? mParent : this; }
 	void destroy(float duration = 0.f);
 	void removeDestroyed();
 	void setState(EntityState state) { mState = state; }
@@ -48,7 +50,8 @@ protected:
 	Team mTeam;
 	DECLARE_LOGGER
 private:
-	std::vector<std::unique_ptr<Entity>> mChildren;
+	std::vector<std::unique_ptr<Entity>> mChildren{};
+	Entity* mParent = nullptr;
 	EntityState mState = EntityState::Active;
 	std::string mName;
 };

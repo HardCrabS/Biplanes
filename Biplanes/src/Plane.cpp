@@ -15,6 +15,7 @@ Plane::Plane(const sf::Texture& planeTexture, const sf::Vector2f& viewSize, Team
 	setPosition(100.f, 100.f);
 	double radians = getRotation() * 3.14159 / 180;
 	mGasDirection = sf::Vector2f(1, 0);
+	mDamageEffects = DamageEffects(this);
 	setName("Plane");
 }
 
@@ -25,12 +26,15 @@ void Plane::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	states.transform *= getTransform();
 	target.draw(mMainSprite, states);
 
+	target.draw(mDamageEffects);
 	drawBoundingBox(target, states);
 }
 
 void Plane::update(float timePerFrame)
 {
 	Entity::update(timePerFrame);
+	mDamageEffects.setPosition(getPosition());
+	mDamageEffects.update(timePerFrame);
 	processMovement(timePerFrame);
 }
 
@@ -43,7 +47,7 @@ void Plane::gas(bool isPressed)
 void Plane::steer(int direction)
 {
 	rotate(STEER_SPEED_IN_DEGREES * direction);
-	double radians = ((float)STEER_SPEED_IN_DEGREES * direction) * 3.14159 / 180;
+	double radians = (double)STEER_SPEED_IN_DEGREES * direction * 3.14159 / 180;
 
 	float rotatedX = mGasDirection.x * std::cos(radians) - mGasDirection.y * std::sin(radians);
 	float rotatedY = mGasDirection.x * std::sin(radians) + mGasDirection.y * std::cos(radians);
@@ -84,10 +88,10 @@ void Plane::shoot()
 	if (!isShootAllowed())
 		return;
 
-	auto bullet = std::make_unique<Bullet>(mGasDirection, Team::Red);
+	auto bullet = std::make_unique<Bullet>(mGasDirection, mTeam);
 	bullet->setPosition(getPosition());
 	bullet->setScale(sf::Vector2f(1.f, 1.f) * 5.f);
-	this->addChild(std::move(bullet));
+	getParent()->addChild(std::move(bullet));
 
 	mLastShotClock.restart();
 }
@@ -95,12 +99,17 @@ void Plane::shoot()
 void Plane::takeDamage()
 {
 	mCurrHealth -= 1;
+	mDamageEffects.onHealthChanged(mCurrHealth);
 	if (mCurrHealth <= 0)
 		die();
 }
 
 void Plane::die()
 {
+	auto explosion = std::make_unique<Animation>(ResourcesManager::getInstance().getSequence(ResourceID::Sequence_Explosion), 0.1f);
+	explosion->setPosition(getPosition());
+	explosion->setScale(sf::Vector2f(2, 2));
+	getParent()->addChild(std::move(explosion));
 	destroy();
 }
 

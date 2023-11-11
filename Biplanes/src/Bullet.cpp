@@ -28,8 +28,9 @@ void Bullet::update(float timePerFrame)
 
 void Bullet::onCollisionEnter(Entity* collision)
 {
-	collision->takeDamage();
 	LogInfo(teamToString(mTeam) + " bullet hit " + teamToString(collision->getTeam()) + " entity!")
+	collision->takeDamage();
+	destroy();
 }
 
 void Bullet::onOutOfBounds(sf::Vector2f bounds)
