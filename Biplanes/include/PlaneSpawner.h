@@ -8,9 +8,11 @@ class PlaneSpawner
 public:
 	PlaneSpawner() {}
 	PlaneSpawner(const sf::Vector2f& viewSize, Entity* sceneRoot);
+	void startListening();
 	void spawnPlane(Team team);
 private:
 	void onPlaneDestroyed(const Event& event);
+	void onRequestPlane(const Event& event);
 private:
 	DECLARE_LOGGER
 	Entity* mSceneRoot{};

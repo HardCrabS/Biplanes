@@ -4,6 +4,7 @@
 AI::AI() : mPlayer(), mPlane() 
 { 
 	DEFINE_LOGGER("main")
+	LogInfo("AI created!")
 	Dispatcher::subscribe(EventID::EntityDestroyed, std::bind(&AI::onPlaneDestroyed, this, std::placeholders::_1));
 	Dispatcher::subscribe(EventID::BoardPlane, std::bind(&AI::onBoardPlane, this, std::placeholders::_1));
 };

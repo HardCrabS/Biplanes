@@ -57,5 +57,4 @@ public:
 	void onHealthChanged(int health);
 private:
 	Entity* mParent{};
-	Entity* mActiveEffect{};
 };

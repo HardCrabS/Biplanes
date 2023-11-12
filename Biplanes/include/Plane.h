@@ -24,6 +24,7 @@ public:
 	void brake();
 	void steer(int direction);
 	void shoot();
+	void catapult();
 	bool isHadTakenOff() { return mHadTakenOff; }
 	void onCollisionEnter(Entity* collision) override;
 	virtual void takeDamage();
@@ -42,6 +43,7 @@ private:
 	sf::Vector2f mGasDirection;
 	sf::Vector2f mVelocityDirection;
 	bool mHadTakenOff = false;
+	bool mHadCatapulted = false;
 
 	const int mMaxHealth = 3;
 	int mCurrHealth;

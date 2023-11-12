@@ -38,12 +38,11 @@ public:
 
 	void fillCollisionPairs(Entity& entityRoot, std::set<std::pair<Entity*, Entity*>>& collisionPairs);
 	virtual void onCollisionEnter(Entity* collision);
-protected:
-	virtual sf::FloatRect getBoundingRect() const;
 	void drawBoundingBox(sf::RenderTarget& target, sf::RenderStates states) const;
+	virtual sf::FloatRect getBoundingRect() const;
+protected:
 private:
 	bool collidesWith(const Entity& entity);
-	bool isCollisionBetween(Entity& le, Entity& re);
 	void checkCollisionWithEveryEntity(Entity& entityToCheck, std::set<std::pair<Entity*, Entity*>>& collisionPairs);
 
 protected:

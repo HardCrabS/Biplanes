@@ -12,6 +12,7 @@ public:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	void update(float deltaTime) override;
 	void setMainSprite(sf::Sprite& sprite);
+	const sf::Sprite& getMainSprite() const { return mMainSprite; }
 private:
 	int mCurrentSpriteIndex = 0;
 	float mTimeBetweenFrames = 0;

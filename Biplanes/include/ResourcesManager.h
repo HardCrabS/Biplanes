@@ -11,10 +11,19 @@ enum class ResourceID
 	Bullet,
 	Background,
 	Ground,
+	Hangar,
+
+	Parachute_left,
+	Parachute_center,
+	Parachute_right,
 
 	Sequence_DamageFire,
 	Sequence_DamageSmoke,
 	Sequence_Explosion,
+
+	Sequence_ParachutistFly,
+	Sequence_ParachutistWalk,
+	Sequence_ParachutistDie,
 };
 
 class ResourcesManager

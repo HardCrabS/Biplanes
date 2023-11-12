@@ -84,11 +84,6 @@ sf::FloatRect Entity::getBoundingRect() const
 	return getTransform().transformRect(mMainSprite.getGlobalBounds());
 }
 
-bool Entity::isCollisionBetween(Entity& le, Entity& re)
-{
-	return le.getBoundingRect().intersects(re.getBoundingRect());
-}
-
 void Entity::onCollisionEnter(Entity* collision)
 {
 	LogInfo("onCollisionEnter: " + mTag)

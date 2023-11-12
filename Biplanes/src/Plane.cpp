@@ -1,5 +1,6 @@
 #include "Plane.h"
 #include "MathUtilities.inl"
+#include "events/Dispatcher.h"
 
 
 Plane::Plane(const sf::Texture& planeTexture, const sf::Vector2f& viewSize, Team team)
@@ -17,7 +18,7 @@ Plane::Plane(const sf::Texture& planeTexture, const sf::Vector2f& viewSize, Team
 	mGasDirection = sf::Vector2f(1, 0);
 	mDamageEffects = DamageEffects(this);
 	mHadTakenOff = false;
-	setTag("Plane");
+	setTag("plane");
 }
 
 void Plane::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -78,11 +79,14 @@ void Plane::processMovement(float timePerFrame)
 	float gasToGravityAngleCos = (mGasDirection.x * GRAVITY_DIR.x + mGasDirection.y * GRAVITY_DIR.y) / (magnitude(mGasDirection) * magnitude(GRAVITY_DIR));
 	mAcceleration += gasToGravityAngleCos * GRAVITY;
 	mVelocity += mAcceleration;
-
-	mVelocityDirection = mVelocity >= 0 ? mGasDirection : GRAVITY_DIR;
-	mVelocityDirection = normalized(mVelocityDirection);
-
 	mVelocity = clamp(mVelocity, -MAX_SPEED, MAX_SPEED);
+
+	if (mHadCatapulted) {
+		mVelocityDirection += GRAVITY_DIR * 0.02f;
+	}
+	else
+		mVelocityDirection = mVelocity >= 0 ? mGasDirection : GRAVITY_DIR;
+	mVelocityDirection = normalized(mVelocityDirection);
 }
 
 bool Plane::isShootAllowed()
@@ -104,6 +108,11 @@ void Plane::shoot()
 	mLastShotClock.restart();
 }
 
+void Plane::catapult()
+{
+	mHadCatapulted = true;
+}
+
 bool Plane::isGrounded()
 {
 	return abs(getPosition().y - GROUND_LEVEL) < 20.f;
@@ -111,7 +120,7 @@ bool Plane::isGrounded()
 
 void Plane::onCollisionEnter(Entity* collision)
 {
-	if (collision->getTag() == "ground" && mHadTakenOff) {
+	if ((collision->getTag() == "ground" && mHadTakenOff) || collision->getTag() == "hangar") {
 		die();
 	}
 }

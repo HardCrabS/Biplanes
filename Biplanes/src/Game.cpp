@@ -14,6 +14,8 @@ Game::Game() : mWindow(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), "Biplanes")
 
 	mSceneRoot = std::make_unique<Entity>();
 
+	mPlayerController.setRoot(mSceneRoot.get());
+
 	// setup background sprites
 	mBGSprite = sf::Sprite(ResourcesManager::getInstance().getTexture(ResourceID::Background));
 	auto texture = mBGSprite.getTexture();
@@ -26,9 +28,16 @@ Game::Game() : mWindow(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), "Biplanes")
 	groundEntity->setTag("ground");
 	mSceneRoot->addChild(std::move(groundEntity));
 
+	auto hangarEntity = std::make_unique<SpriteEntity>(ResourcesManager::getInstance().getTexture(ResourceID::Hangar), true);
+	hangarEntity->setPosition(WINDOW_SIZE.x / 2, GROUND_LEVEL+5);
+	hangarEntity->setScale(3.2f, 3.2f);
+	hangarEntity->setTag("hangar");
+	mSceneRoot->addChild(std::move(hangarEntity));
+
 	mAI.setPlayer(&mPlayerController);
 
 	mPlaneSpawner = PlaneSpawner(mWindow.getView().getSize(), mSceneRoot.get());
+	mPlaneSpawner.startListening();
 	mPlaneSpawner.spawnPlane(Team::Blue);
 	//mPlaneSpawner.spawnPlane(Team::Red);
 }

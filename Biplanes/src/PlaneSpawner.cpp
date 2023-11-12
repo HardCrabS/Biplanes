@@ -1,15 +1,20 @@
 #include "PlaneSpawner.h"
+#include "Utils.h"
 
 PlaneSpawner::PlaneSpawner(const sf::Vector2f& viewSize, Entity* sceneRoot) 
 	: mSceneRoot(sceneRoot)
 	, mViewSize(viewSize)
 {
 	DEFINE_LOGGER("main")
-
+	LogInfo("PlaneSpawner created!")
 	mBlueSpawnPos = sf::Vector2f(100, 410);
 	mRedSpawnPos = sf::Vector2f(600.f, 100.f);
+}
 
-	Dispatcher::subscribe(EventID::EntityDestroyed, std::bind(&PlaneSpawner::onPlaneDestroyed, *this, std::placeholders::_1));
+void PlaneSpawner::startListening()
+{
+	Dispatcher::subscribe(EventID::EntityDestroyed, std::bind(&PlaneSpawner::onPlaneDestroyed, this, std::placeholders::_1));
+	Dispatcher::subscribe(EventID::RequestPlane, std::bind(&PlaneSpawner::onRequestPlane, this, std::placeholders::_1));
 }
 
 void PlaneSpawner::spawnPlane(Team team)
@@ -31,7 +36,19 @@ void PlaneSpawner::spawnPlane(Team team)
 
 void PlaneSpawner::onPlaneDestroyed(const Event& event)
 {
-	const EntityDestroyedEvent& entityEvent = static_cast<const EntityDestroyedEvent&>(event);
-	if (entityEvent.entity->getTag() == "Plane")
-		spawnPlane(entityEvent.entity->getTeam());
+	//const EntityDestroyedEvent& entityEvent = static_cast<const EntityDestroyedEvent&>(event);
+	//if (entityEvent.entity->getTag() == "plane") {
+	//	auto team = entityEvent.entity->getTeam();
+	//	if (!isCatapulted(team) && !isSpawned(team)) {
+	//		LogInfo("[PlaneSpawner] Plane of team " + teamToString(team) + " is destroyed, respawning.")
+	//		spawnPlane(team);
+	//	}
+	//}
+}
+
+void PlaneSpawner::onRequestPlane(const Event& event)
+{
+	const RequestPlaneEvent& hangarReached = static_cast<const RequestPlaneEvent&>(event);
+	LogInfo("[PlaneSpawner] Request to spawn " + teamToString(hangarReached.team) + " plane.")
+	spawnPlane(hangarReached.team);
 }
