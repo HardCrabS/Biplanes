@@ -1,5 +1,6 @@
 #include "AI.h"
 #include "MathUtilities.inl"
+#include "Constants.h"
 
 AI::AI() : mPlayer(), mPlane() 
 { 
@@ -14,6 +15,17 @@ void AI::update(float deltaTime)
 	if (mPlane == nullptr || !mPlayer->isAlive())
 		return;
 
+	if (!mHadTakenOff) {
+		if (mPlane->getVelocity() < 400) {
+			mPlane->gas();
+		}
+		else {
+			mPlane->steer(1);
+			mHadTakenOff = (GROUND_LEVEL - mPlane->getPosition().y) > 30;
+		}
+		return;
+	}
+
 	mPlane->gas();
 	sf::Vector2f AItoPlayerDirection = normalized(mPlayer->getPosition() - mPlane->getPosition());
 	sf::Vector2f faceDirection = mPlane->getFaceDirection();
@@ -21,8 +33,23 @@ void AI::update(float deltaTime)
 	float faceAngleInDegrees = faceAngle * 180 / 3.14;
 	faceAngleInDegrees += faceAngleInDegrees > 180 ? -360 : faceAngleInDegrees < -180 ? 360 : 0;
 
-	if (abs(abs(faceAngleInDegrees) - 90) < 20) {
-		mPlane->steer(faceAngleInDegrees > 0 ? 1 : -1);
+	bool isCloseToGround = (GROUND_LEVEL - mPlane->getPosition().y) < 90;
+	bool isCloseToSky = mPlane->getPosition().y < 30;
+	if (isCloseToSky || isCloseToGround) {
+		if (faceAngleInDegrees < 0)  // facing sky
+		{
+			if (isCloseToSky) {
+				mPlane->steer(faceAngleInDegrees < -90 ? -1 : 1);
+				return;
+			}
+		}
+		else  // facing ground
+		{
+			if (isCloseToGround) {
+				mPlane->steer(faceAngleInDegrees > 90 ? 1 : -1);
+				return;
+			}
+		}
 	}
 
 	float angleBetween = atan2(AItoPlayerDirection.y, AItoPlayerDirection.x) - faceAngle;
@@ -31,9 +58,9 @@ void AI::update(float deltaTime)
 
 	if (abs(angleBetweenInAngles) < 90)
 	{
-		//if (abs(angleBetweenInAngles) > 30) {
-		//	mPlane->steer(angleBetweenInAngles > 0 ? 1 : -1);
-		//}
+		if (abs(angleBetweenInAngles) > 30) {
+			mPlane->steer(angleBetweenInAngles > 0 ? 1 : -1);
+		}
 		mPlane->shoot();
 	}
 }
@@ -42,8 +69,11 @@ void AI::onPlaneDestroyed(const Event& event)
 {
 	const EntityDestroyedEvent& entityEvent = static_cast<const EntityDestroyedEvent&>(event);
 	if (mPlane == entityEvent.entity) {
-		LogInfo("[AI] Plane is destroyed.")
-			mPlane = nullptr;
+		mPlane = nullptr;
+		if (!mHasCatapulted) {
+			LogInfo("[AI] Requesting new plane")
+			Dispatcher::notify(RequestPlaneEvent(Team::Red));
+		}
 	}
 }
 
@@ -52,5 +82,7 @@ void AI::onBoardPlane(const Event& event)
 	const BoardPlaneEvent& boardEvent = static_cast<const BoardPlaneEvent&>(event);
 	if (boardEvent.plane->getTeam() == Team::Red) {
 		mPlane = boardEvent.plane;
+		mHadTakenOff = false;
+		mHasCatapulted = false;
 	}
 }

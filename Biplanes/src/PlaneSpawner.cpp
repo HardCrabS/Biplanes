@@ -7,13 +7,12 @@ PlaneSpawner::PlaneSpawner(const sf::Vector2f& viewSize, Entity* sceneRoot)
 {
 	DEFINE_LOGGER("main")
 	LogInfo("PlaneSpawner created!")
-	mBlueSpawnPos = sf::Vector2f(100, 410);
-	mRedSpawnPos = sf::Vector2f(600.f, 100.f);
+	mBlueSpawnPos = sf::Vector2f(70, 410);
+	mRedSpawnPos = sf::Vector2f(830.f, 410);
 }
 
 void PlaneSpawner::startListening()
 {
-	Dispatcher::subscribe(EventID::EntityDestroyed, std::bind(&PlaneSpawner::onPlaneDestroyed, this, std::placeholders::_1));
 	Dispatcher::subscribe(EventID::RequestPlane, std::bind(&PlaneSpawner::onRequestPlane, this, std::placeholders::_1));
 }
 
@@ -32,18 +31,6 @@ void PlaneSpawner::spawnPlane(Team team)
 
 	Dispatcher::notify(BoardPlaneEvent(plane.get()));
 	mSceneRoot->addChild(std::move(plane));
-}
-
-void PlaneSpawner::onPlaneDestroyed(const Event& event)
-{
-	//const EntityDestroyedEvent& entityEvent = static_cast<const EntityDestroyedEvent&>(event);
-	//if (entityEvent.entity->getTag() == "plane") {
-	//	auto team = entityEvent.entity->getTeam();
-	//	if (!isCatapulted(team) && !isSpawned(team)) {
-	//		LogInfo("[PlaneSpawner] Plane of team " + teamToString(team) + " is destroyed, respawning.")
-	//		spawnPlane(team);
-	//	}
-	//}
 }
 
 void PlaneSpawner::onRequestPlane(const Event& event)

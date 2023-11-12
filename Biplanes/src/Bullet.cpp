@@ -6,7 +6,7 @@ Bullet::Bullet(sf::Vector2f direction, Team team)
 	: Entity(ResourcesManager::getInstance().getTexture(ResourceID::Bullet), team)
 	, mDirection(direction)
 {
-	setTag("Bullet");
+	setTag("bullet");
 }
 
 void Bullet::draw(sf::RenderTarget& target, sf::RenderStates states) const

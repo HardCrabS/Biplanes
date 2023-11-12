@@ -39,7 +39,7 @@ Game::Game() : mWindow(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), "Biplanes")
 	mPlaneSpawner = PlaneSpawner(mWindow.getView().getSize(), mSceneRoot.get());
 	mPlaneSpawner.startListening();
 	mPlaneSpawner.spawnPlane(Team::Blue);
-	//mPlaneSpawner.spawnPlane(Team::Red);
+	mPlaneSpawner.spawnPlane(Team::Red);
 }
 
 void Game::run()

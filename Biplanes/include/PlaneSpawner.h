@@ -11,7 +11,6 @@ public:
 	void startListening();
 	void spawnPlane(Team team);
 private:
-	void onPlaneDestroyed(const Event& event);
 	void onRequestPlane(const Event& event);
 private:
 	DECLARE_LOGGER

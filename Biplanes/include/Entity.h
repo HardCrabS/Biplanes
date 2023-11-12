@@ -48,10 +48,10 @@ private:
 protected:
 	sf::Sprite mMainSprite;
 	Team mTeam;
+	Entity* mParent = nullptr;
 	DECLARE_LOGGER
 private:
 	std::vector<std::unique_ptr<Entity>> mChildren{};
-	Entity* mParent = nullptr;
 	EntityState mState = EntityState::Active;
 	std::string mTag;
 };

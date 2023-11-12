@@ -14,11 +14,11 @@ public:
 	void controlPlane();
 	void controlParachutist();
 	void setPlane(Plane* plane);
-	bool isAlive() { return mPlane != nullptr; }
+	bool isAlive() { return mPlane != nullptr || mParachutist != nullptr; }
 	sf::Vector2f getPosition();
 	void setRoot(Entity* sceneRoot) { mSceneRoot = sceneRoot; }
 private:
-	void onPlaneDestroyed(const Event& event);
+	void onEntityDestroyed(const Event& event);
 	void onBoardPlane(const Event& event);
 private:
 	DECLARE_LOGGER

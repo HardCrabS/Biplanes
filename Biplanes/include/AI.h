@@ -16,4 +16,6 @@ private:
 	DECLARE_LOGGER
 	Player* mPlayer;
 	Plane* mPlane;
+	bool mHadTakenOff = false;
+	bool mHasCatapulted = false;
 };

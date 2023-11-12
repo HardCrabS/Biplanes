@@ -11,6 +11,8 @@ std::string eventIDToString(EventID id)
 		return "EntityDestroyed";
 	case EventID::BoardPlane:
 		return "BoardPlane";
+	case EventID::RequestPlane:
+		return "RequestPlane";
 	}
 	return "Unspecified";
 }

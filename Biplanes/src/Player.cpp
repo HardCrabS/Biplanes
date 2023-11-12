@@ -5,7 +5,7 @@ Player::Player() : mPlane()
 {
 	DEFINE_LOGGER("main")
 	LogInfo("Player created!")
-	Dispatcher::subscribe(EventID::EntityDestroyed, std::bind(&Player::onPlaneDestroyed, this, std::placeholders::_1));
+	Dispatcher::subscribe(EventID::EntityDestroyed, std::bind(&Player::onEntityDestroyed, this, std::placeholders::_1));
 	Dispatcher::subscribe(EventID::BoardPlane, std::bind(&Player::onBoardPlane, this, std::placeholders::_1));
 }
 
@@ -51,7 +51,7 @@ void Player::controlPlane()
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
 	{
 		mPlane->catapult();
-		auto parachutist = std::make_unique<Parachutist>(mPlane->getTeam());
+		auto parachutist = std::make_unique<Parachutist>(mPlane->getTeam(), mSceneRoot);
 		parachutist->setPosition(mPlane->getPosition());
 		mParachutist = parachutist.get();
 		mSceneRoot->addChild(std::move(parachutist));
@@ -82,15 +82,17 @@ void Player::setPlane(Plane* plane)
 
 sf::Vector2f Player::getPosition()
 {
-	return mPlane != nullptr ? mPlane->getPosition() : sf::Vector2f(0, 0);
+	return mPlane != nullptr ? mPlane->getPosition() : mParachutist != nullptr ? mParachutist->getPosition() : sf::Vector2f(0, 0);
 }
 
-void Player::onPlaneDestroyed(const Event& event)
+void Player::onEntityDestroyed(const Event& event)
 {
 	const EntityDestroyedEvent& entityEvent = static_cast<const EntityDestroyedEvent&>(event);
-	if (mPlane == entityEvent.entity) {
+	bool isParachutistDeath = entityEvent.entity == mParachutist;
+	if (entityEvent.entity == mPlane || isParachutistDeath) {
 		mPlane = nullptr;
-		if (!mHasCatapulted) {
+		mParachutist = nullptr;
+		if (!mHasCatapulted || isParachutistDeath) {
 			LogInfo("[Player] Requesting new plane")
 			Dispatcher::notify(RequestPlaneEvent(mTeam));
 		}

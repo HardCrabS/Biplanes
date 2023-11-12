@@ -3,10 +3,11 @@
 #include "Utils.h"
 #include "events/Dispatcher.h"
 
-Parachutist::Parachutist(Team team)
+Parachutist::Parachutist(Team team, Entity* parent)
 {
 	setScale(2, 2);
 	mTeam = team;
+	setParent(parent);
 
 	mAllParachuteSprites[0] = sf::Sprite(ResourcesManager::getInstance().getTexture(ResourceID::Parachute_left));
 	mAllParachuteSprites[1] = sf::Sprite(ResourcesManager::getInstance().getTexture(ResourceID::Parachute_center));
@@ -64,9 +65,18 @@ void Parachutist::onCollisionEnter(Entity* collision)
 		}
 	}
 	else if (collision->getTag() == "hangar") {
-		Dispatcher::notify(RequestPlaneEvent(mTeam));
+		//Dispatcher::notify(RequestPlaneEvent(mTeam));
 		destroy();
 	}
+}
+
+void Parachutist::takeDamage()
+{
+	auto dieAnimation = std::make_unique<Animation>(ResourcesManager::getInstance().getSequence(ResourceID::Sequence_ParachutistDie), 0.1f);
+	dieAnimation->setPosition(getPosition());
+	dieAnimation->setScale(sf::Vector2f(2, 2));
+	mParent->addChild(std::move(dieAnimation));
+	destroy();
 }
 
 sf::FloatRect Parachutist::getBoundingRect() const

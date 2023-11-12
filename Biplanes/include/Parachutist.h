@@ -5,11 +5,12 @@
 class Parachutist : public Entity
 {
 public:
-	Parachutist(Team team);
+	Parachutist(Team team, Entity* parent);
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	void update(float timePerFrame) override;
 	void walk(int direction);
 	void onCollisionEnter(Entity* collision) override;
+	void takeDamage() override;
 private:
 	sf::FloatRect getBoundingRect() const override;
 	void updateParachute(int index);

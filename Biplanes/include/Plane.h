@@ -30,6 +30,7 @@ public:
 	virtual void takeDamage();
 	void mirror();
 	sf::Vector2f getFaceDirection() { return mGasDirection; }
+	float getVelocity() { return mVelocity; }
 private:
 	void die();
 	bool isGrounded();
