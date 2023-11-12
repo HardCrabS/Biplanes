@@ -8,10 +8,14 @@ void ResourcesManager::load()
 	mTextures[ResourceID::Background].loadFromFile("./Assets/background.png");
 	mTextures[ResourceID::Ground].loadFromFile("./Assets/ground.png");
 	mTextures[ResourceID::Hangar].loadFromFile("./Assets/hangar.png");
+	mTextures[ResourceID::Cloud].loadFromFile("./Assets/cloud.png");
+	mTextures[ResourceID::Airship].loadFromFile("./Assets/airship.png");
 
 	mTextures[ResourceID::Parachute_left].loadFromFile("./Assets/sequence/Parachutist/Parachute/left.png");
 	mTextures[ResourceID::Parachute_center].loadFromFile("./Assets/sequence/Parachutist/Parachute/center.png");
 	mTextures[ResourceID::Parachute_right].loadFromFile("./Assets/sequence/Parachutist/Parachute/right.png");
+
+	mFonts[ResourceID::Font_Pixel].loadFromFile("./Assets/Fonts/Pixel.ttf");
 
 	loadSequence("./Assets/sequence/DamagedSmoke/", mSequences[ResourceID::Sequence_DamageSmoke]);
 	loadSequence("./Assets/sequence/DamagedFire/", mSequences[ResourceID::Sequence_DamageFire]);
@@ -25,6 +29,11 @@ void ResourcesManager::load()
 sf::Texture& ResourcesManager::getTexture(ResourceID resourceID)
 {
 	return mTextures[resourceID];
+}
+
+sf::Font& ResourcesManager::getFont(ResourceID resourceID)
+{
+	return mFonts[resourceID];
 }
 
 std::vector<sf::Texture>& ResourcesManager::getSequence(ResourceID resourceID)

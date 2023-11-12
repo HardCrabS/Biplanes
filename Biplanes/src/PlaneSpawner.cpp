@@ -1,4 +1,5 @@
 #include "PlaneSpawner.h"
+#include "Constants.h"
 #include "Utils.h"
 
 PlaneSpawner::PlaneSpawner(const sf::Vector2f& viewSize, Entity* sceneRoot) 
@@ -7,8 +8,8 @@ PlaneSpawner::PlaneSpawner(const sf::Vector2f& viewSize, Entity* sceneRoot)
 {
 	DEFINE_LOGGER("main")
 	LogInfo("PlaneSpawner created!")
-	mBlueSpawnPos = sf::Vector2f(70, 410);
-	mRedSpawnPos = sf::Vector2f(830.f, 410);
+	mBlueSpawnPos = sf::Vector2f(70, GROUND_LEVEL);
+	mRedSpawnPos = sf::Vector2f(830.f, GROUND_LEVEL);
 }
 
 void PlaneSpawner::startListening()

@@ -16,13 +16,13 @@ void AI::update(float deltaTime)
 		return;
 
 	if (!mHadTakenOff) {
-		if (mPlane->getVelocity() < 400) {
+		if (mPlane->getVelocity() < 300) {
 			mPlane->gas();
 		}
 		else {
 			mPlane->steer(1);
-			mHadTakenOff = (GROUND_LEVEL - mPlane->getPosition().y) > 30;
 		}
+		mHadTakenOff = (GROUND_LEVEL - mPlane->getPosition().y) > 50;
 		return;
 	}
 

@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "ResourcesManager.h"
 #include "SpriteEntity.h"
+#include "ScoreAirship.h"
 #include "Constants.h"
 
 
@@ -21,16 +22,29 @@ Game::Game() : mWindow(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), "Biplanes")
 	auto texture = mBGSprite.getTexture();
 	mBGSprite.setScale(sf::Vector2f(WINDOW_SIZE.x / texture->getSize().x, WINDOW_SIZE.y / texture->getSize().y));
 
+	auto cloud = std::make_unique<SpriteEntity>(ResourcesManager::getInstance().getTexture(ResourceID::Cloud), true, false);
+	cloud->setMovement(sf::Vector2f(1, 0), 10);
+	cloud->setPosition(WINDOW_SIZE.x / 2, 15);
+	cloud->setScale(3.7f, 3.7f);
+	cloud->setTag("cloud");
+	mSceneRoot->addChild(std::move(cloud));
+
+	auto airship = std::make_unique<ScoreAirship>(sf::Vector2f(1, 0), 7);
+	airship->setPosition(WINDOW_SIZE.x / 4, 100.f);
+	airship->setScale(3.7f, 3.7f);
+	airship->setTag("airship");
+	mSceneRoot->addChild(std::move(airship));
+
 	const sf::Texture* groundTexture = &ResourcesManager::getInstance().getTexture(ResourceID::Ground);
 	auto groundEntity = std::make_unique<SpriteEntity>(*groundTexture);
 	groundEntity->setScale(mBGSprite.getScale());
-	groundEntity->setPosition(0, WINDOW_SIZE.y - groundTexture->getSize().y * mBGSprite.getScale().y);
+	groundEntity->setPosition(0, WINDOW_SIZE.y - groundTexture->getSize().y * mBGSprite.getScale().y - 13);
 	groundEntity->setTag("ground");
 	mSceneRoot->addChild(std::move(groundEntity));
 
 	auto hangarEntity = std::make_unique<SpriteEntity>(ResourcesManager::getInstance().getTexture(ResourceID::Hangar), true);
-	hangarEntity->setPosition(WINDOW_SIZE.x / 2, GROUND_LEVEL+5);
-	hangarEntity->setScale(3.2f, 3.2f);
+	hangarEntity->setPosition(WINDOW_SIZE.x / 2, GROUND_LEVEL);
+	hangarEntity->setScale(3.7f, 3.7f);
 	hangarEntity->setTag("hangar");
 	mSceneRoot->addChild(std::move(hangarEntity));
 

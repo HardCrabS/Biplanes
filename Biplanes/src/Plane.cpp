@@ -136,10 +136,12 @@ void Plane::takeDamage()
 void Plane::die()
 {
 	mCurrHealth = 0;
-	auto explosion = std::make_unique<Animation>(ResourcesManager::getInstance().getSequence(ResourceID::Sequence_Explosion), 0.1f);
+	auto explosion = std::make_unique<Animation>(ResourcesManager::getInstance().getSequence(ResourceID::Sequence_Explosion), 0.05f);
 	explosion->setPosition(getPosition());
-	explosion->setScale(sf::Vector2f(2, 2));
+	explosion->setScale(sf::Vector2f(2.5f, 2.5f));
 	getParent()->addChild(std::move(explosion));
+	if (!mHadCatapulted)
+		Dispatcher::notify(LostScoreEvent(mTeam));
 	destroy();
 }
 

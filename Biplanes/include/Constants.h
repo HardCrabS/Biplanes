@@ -7,4 +7,4 @@ enum class Team
 	Red
 };
 
-const float GROUND_LEVEL = 410.f;
+const float GROUND_LEVEL = 500.f;

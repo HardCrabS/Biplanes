@@ -6,7 +6,8 @@ enum class EventID
 {
 	EntityDestroyed,
 	BoardPlane,
-	RequestPlane
+	RequestPlane,
+	LostScore,
 };
 
 class Event
@@ -41,6 +42,16 @@ public:
 	RequestPlaneEvent(Team team) : team(team) {}
 	EventID getEventID() const override {
 		return EventID::RequestPlane;
+	}
+	Team team;
+};
+
+class LostScoreEvent : public Event
+{
+public:
+	LostScoreEvent(Team team) : team(team) {}
+	EventID getEventID() const override {
+		return EventID::LostScore;
 	}
 	Team team;
 };

@@ -76,6 +76,7 @@ void Parachutist::takeDamage()
 	dieAnimation->setPosition(getPosition());
 	dieAnimation->setScale(sf::Vector2f(2, 2));
 	mParent->addChild(std::move(dieAnimation));
+	Dispatcher::notify(LostScoreEvent(mTeam));
 	destroy();
 }
 
