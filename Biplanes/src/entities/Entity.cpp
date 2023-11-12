@@ -1,4 +1,4 @@
-#include "Entity.h"
+#include "entities/Entity.h"
 #include "events/Dispatcher.h"
 
 Entity::Entity() : mTeam(Team::None)

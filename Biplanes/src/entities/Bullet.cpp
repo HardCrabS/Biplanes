@@ -1,4 +1,4 @@
-#include "Bullet.h"
+#include "entities/Bullet.h"
 #include "Utils.h"
 #include "ResourcesManager.h"
 

@@ -1,6 +1,6 @@
 #pragma once
-#include "Entity.h"
-#include "Plane.h"
+#include "entities/Entity.h"
+#include "entities/Plane.h"
 
 enum class EventID
 {

@@ -4,8 +4,8 @@
 #include <set>
 #include "Player.h"
 #include "AI.h"
-#include "Plane.h"
-#include "Animation.h"
+#include "entities/Plane.h"
+#include "entities/Animation.h"
 #include "PlaneSpawner.h"
 
 const sf::Vector2i WINDOW_SIZE = sf::Vector2i(896, 688);

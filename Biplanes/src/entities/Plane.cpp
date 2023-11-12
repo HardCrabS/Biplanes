@@ -1,4 +1,4 @@
-#include "Plane.h"
+#include "entities/Plane.h"
 #include "MathUtilities.inl"
 #include "events/Dispatcher.h"
 

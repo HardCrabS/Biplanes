@@ -1,9 +1,9 @@
 #pragma once
 #include <memory>
-#include "Plane.h"
+#include "entities/Plane.h"
 #include "events/Dispatcher.h"
 #include "events/Event.h"
-#include "Parachutist.h"
+#include "entities/Parachutist.h"
 
 
 class Player

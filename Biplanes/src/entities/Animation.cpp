@@ -1,4 +1,4 @@
-#include "Animation.h"
+#include "entities/Animation.h"
 
 Animation::Animation(std::vector<sf::Texture>& textures, float timeBetweenFrames, bool isLooping)
 	: mTimeBetweenFrames(timeBetweenFrames)

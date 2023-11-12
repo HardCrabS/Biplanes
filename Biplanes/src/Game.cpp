@@ -2,8 +2,8 @@
 #include <algorithm>
 #include "Game.h"
 #include "ResourcesManager.h"
-#include "SpriteEntity.h"
-#include "ScoreAirship.h"
+#include "entities/SpriteEntity.h"
+#include "entities/ScoreAirship.h"
 #include "Constants.h"
 
 

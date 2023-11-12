@@ -1,4 +1,4 @@
-#include "ScoreAirship.h"
+#include "entities/ScoreAirship.h"
 #include "ResourcesManager.h"
 
 ScoreAirship::ScoreAirship(const sf::Vector2f& dir, float speed) 

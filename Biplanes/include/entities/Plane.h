@@ -1,10 +1,10 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include "Entity.h"
-#include "Bullet.h"
+#include "entities/Entity.h"
+#include "entities/Bullet.h"
 #include "Constants.h"
-#include "DamageEffects.h"
+#include "entities/DamageEffects.h"
 
 
 const float MAX_SPEED = 400.f;

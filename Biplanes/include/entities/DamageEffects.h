@@ -1,6 +1,6 @@
 #pragma once
-#include "Entity.h"
-#include "Animation.h"
+#include "entities/Entity.h"
+#include "entities/Animation.h"
 #include "ResourcesManager.h"
 
 const int SMOKE_HEALTH = 2;

@@ -1,5 +1,5 @@
 #pragma once
-#include "SpriteEntity.h"
+#include "entities/SpriteEntity.h"
 #include "events/Dispatcher.h"
 
 class ScoreAirship : public SpriteEntity

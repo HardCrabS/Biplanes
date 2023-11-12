@@ -1,5 +1,5 @@
 #pragma once
-#include "Plane.h"
+#include "entities/Plane.h"
 #include "Player.h"
 
 class AI

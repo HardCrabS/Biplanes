@@ -1,4 +1,4 @@
-#include "Parachutist.h"
+#include "entities/Parachutist.h"
 #include "ResourcesManager.h"
 #include "Utils.h"
 #include "events/Dispatcher.h"

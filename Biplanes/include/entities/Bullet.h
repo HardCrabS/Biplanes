@@ -1,6 +1,6 @@
 #pragma once
 #include "SFML/Graphics.hpp"
-#include "Entity.h"
+#include "entities/Entity.h"
 #include "Logger.h"
 #include "Constants.h"
 

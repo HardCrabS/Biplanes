@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "SFML/Graphics.hpp"
-#include "Entity.h"
+#include "entities/Entity.h"
 
 class Animation : public Entity 
 {
