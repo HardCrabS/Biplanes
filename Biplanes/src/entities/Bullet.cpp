@@ -17,7 +17,9 @@ void Bullet::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	states.transform *= getTransform();
 
 	target.draw(mMainSprite, states);
+#ifdef DEBUG_DRAW
 	drawBoundingBox(target, states);
+#endif
 }
 
 void Bullet::update(float timePerFrame)

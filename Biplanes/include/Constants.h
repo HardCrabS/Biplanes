@@ -1,5 +1,7 @@
 #pragma once
 
+//#define DEBUG_DRAW
+
 enum class Team
 {
 	None,

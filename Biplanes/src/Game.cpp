@@ -19,17 +19,17 @@ Game::Game() : mWindow(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), "Biplanes")
 	// setup background sprites
 	mBGSprite = sf::Sprite(ResourcesManager::getInstance().getTexture(ResourceID::Background));
 	auto texture = mBGSprite.getTexture();
-	mBGSprite.setScale(sf::Vector2f(WINDOW_SIZE.x / texture->getSize().x, WINDOW_SIZE.y / texture->getSize().y));
+	mBGSprite.setScale(sf::Vector2f(float(WINDOW_SIZE.x) / texture->getSize().x, float(WINDOW_SIZE.y) / texture->getSize().y));
 
 	auto cloud = std::make_unique<SpriteEntity>(ResourcesManager::getInstance().getTexture(ResourceID::Cloud), true, false);
 	cloud->setMovement(sf::Vector2f(1, 0), 10);
-	cloud->setPosition(WINDOW_SIZE.x / 2, 15);
+	cloud->setPosition(float(WINDOW_SIZE.x) / 2, 15);
 	cloud->setScale(3.7f, 3.7f);
 	cloud->setTag("cloud");
 	mSceneRoot->addChild(std::move(cloud));
 
 	auto airship = std::make_unique<ScoreAirship>(sf::Vector2f(1, 0), 7);
-	airship->setPosition(WINDOW_SIZE.x / 4, 100.f);
+	airship->setPosition(float(WINDOW_SIZE.x) / 4, 100.f);
 	airship->setScale(3.7f, 3.7f);
 	airship->setTag("airship");
 	mSceneRoot->addChild(std::move(airship));
@@ -42,7 +42,7 @@ Game::Game() : mWindow(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), "Biplanes")
 	mSceneRoot->addChild(std::move(groundEntity));
 
 	auto hangarEntity = std::make_unique<SpriteEntity>(ResourcesManager::getInstance().getTexture(ResourceID::Hangar), true);
-	hangarEntity->setPosition(WINDOW_SIZE.x / 2, GROUND_LEVEL);
+	hangarEntity->setPosition(float(WINDOW_SIZE.x) / 2, GROUND_LEVEL);
 	hangarEntity->setScale(3.7f, 3.7f);
 	hangarEntity->setTag("hangar");
 	mSceneRoot->addChild(std::move(hangarEntity));
@@ -91,7 +91,7 @@ void Game::update(float timePerFrame)
 	mPlayerController.update(timePerFrame);
 	mAI.update(timePerFrame);
 	mSceneRoot->update(timePerFrame);
-	mSceneRoot->clampToBounds(sf::Vector2f(WINDOW_SIZE.x, WINDOW_SIZE.y));
+	mSceneRoot->clampToBounds(sf::Vector2f(static_cast<float>(WINDOW_SIZE.x), static_cast<float>(WINDOW_SIZE.y)));
 }
 
 void Game::render()

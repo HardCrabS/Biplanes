@@ -45,15 +45,12 @@ void Entity::removeDestroyed()
 		mChildren.end(),
 		[](std::unique_ptr<Entity>& e) { return e->getState() == EntityState::Destroyed; }
 	);
-	int removedEntitiesCount = std::distance(destroyedStart, mChildren.end());
-	if (removedEntitiesCount > 0)
+	if (std::distance(destroyedStart, mChildren.end()) > 0)
 	{
 		mChildren.erase(
 			destroyedStart,
 			mChildren.end()
 		);
-
-		logInfo("Removed entities: " + std::to_string(removedEntitiesCount));
 	}
 	for (std::unique_ptr<Entity>& child : mChildren) {
 		child->removeDestroyed();
@@ -67,6 +64,7 @@ bool Entity::collidesWith(const Entity& entity)
 
 void Entity::drawBoundingBox(sf::RenderTarget& target, sf::RenderStates states) const
 {
+#ifdef DEBUG_DRAW
 	sf::FloatRect boundingBox = getBoundingRect();
 	sf::RectangleShape rect(boundingBox.getSize());
 	rect.setPosition(boundingBox.left, boundingBox.top);
@@ -75,6 +73,7 @@ void Entity::drawBoundingBox(sf::RenderTarget& target, sf::RenderStates states) 
 	rect.setOutlineThickness(1.f);
 
 	target.draw(rect);
+#endif
 }
 
 sf::FloatRect Entity::getBoundingRect() const

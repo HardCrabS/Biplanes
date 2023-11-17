@@ -23,7 +23,7 @@ private:
 private:
 	Plane* mPlane{};
 	Parachutist* mParachutist{};
-	Entity* mSceneRoot;
+	Entity* mSceneRoot{};
 	bool mTakeOffInitiated = false;
 	bool mHasCatapulted = false;
 	Team mTeam = Team::Blue;

@@ -32,8 +32,8 @@ void Parachutist::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 void Parachutist::update(float timePerFrame)
 {
-	sf::Vector2f horizontal = sf::Vector2f(mWalkDirection, 0) * (isGrounded ? mWalkSpeed : mParachuteHorizontalSpeed);
-	sf::Vector2f vertical = sf::Vector2f(0, isGrounded ? 0 : 70);
+	sf::Vector2f horizontal = sf::Vector2f(static_cast<float>(mWalkDirection), 0) * (isGrounded ? mWalkSpeed : mParachuteHorizontalSpeed);
+	sf::Vector2f vertical = sf::Vector2f(0, isGrounded ? 0.f : 70.f);
 	move((horizontal + vertical) * timePerFrame);
 
 	mCurrentAnimation.update(timePerFrame);

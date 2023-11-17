@@ -16,7 +16,7 @@ const sf::Vector2f GRAVITY_DIR = sf::Vector2f(0.f, 1.f);
 class Plane : public Entity
 {
 public:
-	Plane() : mVelocity() {};
+	Plane() {};
 	Plane(const sf::Texture& planeTexture, const sf::Vector2f& viewSize, Team team);
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	void update(float timePerFrame);
@@ -40,14 +40,14 @@ private:
 	sf::Vector2f mViewSize;
 
 	float mAcceleration = 0;
-	float mVelocity;
+	float mVelocity = 0;
 	sf::Vector2f mGasDirection;
 	sf::Vector2f mVelocityDirection;
 	bool mHadTakenOff = false;
 	bool mHadCatapulted = false;
 
 	const int mMaxHealth = 3;
-	int mCurrHealth;
+	int mCurrHealth = 0;
 	sf::Clock mLastShotClock;
 	float mTimePerShot = 0.5f;
 	DamageEffects mDamageEffects;

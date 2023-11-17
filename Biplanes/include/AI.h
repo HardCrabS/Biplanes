@@ -17,4 +17,8 @@ private:
 	Plane* mPlane;
 	bool mHadTakenOff = false;
 	bool mHasCatapulted = false;
+
+	int mLatestSteerDirection = 0;
+	float mTimeSinceChanedDirection = 0;
+	float mTimeUntilChangeDirection = 0;
 };
