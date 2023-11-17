@@ -80,7 +80,6 @@ void Game::handleEvents()
 	{
 		if (event.type == sf::Event::Closed)
 			mWindow.close();
-
 	}
 }
 

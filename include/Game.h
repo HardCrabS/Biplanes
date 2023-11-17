@@ -1,7 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "Logger.h"
 #include <set>
+#include "Logger.h"
 #include "Player.h"
 #include "AI.h"
 #include "entities/Plane.h"
