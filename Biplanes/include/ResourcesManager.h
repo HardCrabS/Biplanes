@@ -47,7 +47,8 @@ public:
 	void operator=(const ResourcesManager&) = delete;
 private:
 	ResourcesManager() {}
-	void loadSequence(std::string sequencePath, std::vector<sf::Texture>& sequenceVector);
+	void loadTexture(ResourceID rID, const std::string& path);
+	void loadSequence(const std::string& sequencePath, std::vector<sf::Texture>& sequenceVector);
 
 	std::unordered_map<ResourceID, sf::Texture> mTextures;
 	std::unordered_map<ResourceID, std::vector<sf::Texture>> mSequences;

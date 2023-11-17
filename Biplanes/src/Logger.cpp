@@ -2,10 +2,10 @@
 
 void logInfo(const std::string& message)
 {
-	std::cout << message << std::endl;
+	std::cout << "[Info] " << message << std::endl;
 }
 
 void logError(const std::string& message)
 {
-	std::cerr << message << std::endl;
+	std::cerr << "[Error] " << message << std::endl;
 }

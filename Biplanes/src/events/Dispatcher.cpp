@@ -12,6 +12,8 @@ std::string eventIDToString(EventID id)
 		return "BoardPlane";
 	case EventID::RequestPlane:
 		return "RequestPlane";
+	case EventID::LostScore:
+		return "LostScore";
 	}
 	return "Unspecified";
 }

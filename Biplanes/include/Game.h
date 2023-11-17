@@ -36,9 +36,3 @@ private:
 	std::set<std::pair<Entity*, Entity*>> mCollisionPairs;
 	std::set<std::pair<Entity*, Entity*>> mPrevFrameCollisionPairs;
 };
-
-void main()
-{
-	Game game;
-	game.run();
-}

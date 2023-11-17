@@ -1,19 +1,20 @@
 #include "ResourcesManager.h"
+#include <filesystem>
 
 void ResourcesManager::load()
 {
-	mTextures[ResourceID::RedPlane].loadFromFile("./Assets/redPlane.png");
-	mTextures[ResourceID::BluePlane].loadFromFile("./Assets/bluePlane.png");
-	mTextures[ResourceID::Bullet].loadFromFile("./Assets/bullet.png");
-	mTextures[ResourceID::Background].loadFromFile("./Assets/background.png");
-	mTextures[ResourceID::Ground].loadFromFile("./Assets/ground.png");
-	mTextures[ResourceID::Hangar].loadFromFile("./Assets/hangar.png");
-	mTextures[ResourceID::Cloud].loadFromFile("./Assets/cloud.png");
-	mTextures[ResourceID::Airship].loadFromFile("./Assets/airship.png");
+	loadTexture(ResourceID::RedPlane, "Assets/redPlane.png");
+	loadTexture(ResourceID::BluePlane, "Assets/bluePlane.png");
+	loadTexture(ResourceID::Bullet, "Assets/bullet.png");
+	loadTexture(ResourceID::Background, "Assets/background.png");
+	loadTexture(ResourceID::Ground, "Assets/ground.png");
+	loadTexture(ResourceID::Hangar, "Assets/hangar.png");
+	loadTexture(ResourceID::Cloud, "Assets/cloud.png");
+	loadTexture(ResourceID::Airship, "Assets/airship.png");
 
-	mTextures[ResourceID::Parachute_left].loadFromFile("./Assets/sequence/Parachutist/Parachute/left.png");
-	mTextures[ResourceID::Parachute_center].loadFromFile("./Assets/sequence/Parachutist/Parachute/center.png");
-	mTextures[ResourceID::Parachute_right].loadFromFile("./Assets/sequence/Parachutist/Parachute/right.png");
+	loadTexture(ResourceID::Parachute_left, "./Assets/sequence/Parachutist/Parachute/left.png");
+	loadTexture(ResourceID::Parachute_center, "./Assets/sequence/Parachutist/Parachute/center.png");
+	loadTexture(ResourceID::Parachute_right, "./Assets/sequence/Parachutist/Parachute/right.png");
 
 	mFonts[ResourceID::Font_Pixel].loadFromFile("./Assets/Fonts/Pixel.ttf");
 
@@ -41,15 +42,29 @@ std::vector<sf::Texture>& ResourcesManager::getSequence(ResourceID resourceID)
 	return mSequences[resourceID];
 }
 
-void ResourcesManager::loadSequence(std::string sequencePath, std::vector<sf::Texture>& sequenceVector)
+void ResourcesManager::loadTexture(ResourceID rID, const std::string& path)
+{
+	bool success = mTextures[rID].loadFromFile(path);
+	if (!success)
+		throw std::runtime_error("Failed to load a texture: " + path);
+}
+
+void ResourcesManager::loadSequence(const std::string& sequencePath, std::vector<sf::Texture>& sequenceVector)
 {
 	sf::Texture sequenceTexture;
 	int index = 0;
-	std::string path = sequencePath + std::to_string(index) + ".png";
-	while (sequenceTexture.loadFromFile(path))
+	//std::string path = sequencePath + std::to_string(index) + ".png";
+	std::filesystem::path path{ sequencePath + std::to_string(index) + ".png" };
+	while(true)
 	{
+		bool success = sequenceTexture.loadFromFile(path.string());
+		if (!success)
+			throw std::runtime_error("Failed to load a sequence texture: " + path.string());
+
 		sequenceVector.push_back(sequenceTexture);
 		index++;
-		path = sequencePath + std::to_string(index) + ".png";
+		path = std::filesystem::path(sequencePath + std::to_string(index) + ".png");
+		if (!std::filesystem::exists(path))
+			break;
 	}
 }
