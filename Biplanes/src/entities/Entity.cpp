@@ -3,12 +3,10 @@
 
 Entity::Entity() : mTeam(Team::None)
 {
-	DEFINE_LOGGER("main")
 }
 
 Entity::Entity(const sf::Texture& texture, Team team) : mMainSprite(texture), mTeam(team)
 {
-	DEFINE_LOGGER("main")
 }
 
 void Entity::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -55,7 +53,7 @@ void Entity::removeDestroyed()
 			mChildren.end()
 		);
 
-		LogInfo("Removed entities: " + std::to_string(removedEntitiesCount))
+		logInfo("Removed entities: " + std::to_string(removedEntitiesCount));
 	}
 	for (std::unique_ptr<Entity>& child : mChildren) {
 		child->removeDestroyed();
@@ -86,7 +84,7 @@ sf::FloatRect Entity::getBoundingRect() const
 
 void Entity::onCollisionEnter(Entity* collision)
 {
-	LogInfo("onCollisionEnter: " + mTag)
+	logInfo("onCollisionEnter: " + mTag);
 }
 
 void Entity::clampToBounds(sf::Vector2f bounds)
@@ -101,7 +99,7 @@ void Entity::clampToBounds(sf::Vector2f bounds)
 
 void Entity::onOutOfBounds(sf::Vector2f bounds)
 {
-	LogInfo("Out of bounds!");
+	logInfo("Out of bounds!");
 	auto pos = getPosition();
 	float x = pos.x < 0 ? bounds.x : pos.x > bounds.x ? 0 : pos.x;
 	float y = pos.y < 0 ? bounds.y : pos.y > bounds.y ? 0 : pos.y;

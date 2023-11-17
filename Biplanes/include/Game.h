@@ -22,10 +22,7 @@ private:
 	void render();
 	void handleCollisions();
 	sf::FloatRect getViewBounds();
-
-	Logger mLogger;
-	DECLARE_LOGGER
-
+private:
 	sf::RenderWindow mWindow;
 
 	PlaneSpawner mPlaneSpawner;

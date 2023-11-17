@@ -13,7 +13,6 @@ public:
 private:
 	void onRequestPlane(const Event& event);
 private:
-	DECLARE_LOGGER
 	Entity* mSceneRoot{};
 
 	sf::Vector2f mViewSize;

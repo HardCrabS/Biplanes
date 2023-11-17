@@ -9,8 +9,7 @@
 
 Game::Game() : mWindow(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), "Biplanes")
 {
-	DEFINE_LOGGER("main")
-	LogInfo("Game Start!");
+	logInfo("Game Start!");
 	ResourcesManager::getInstance().load();
 
 	mSceneRoot = std::make_unique<Entity>();

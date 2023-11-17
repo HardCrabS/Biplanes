@@ -28,7 +28,7 @@ void Bullet::update(float timePerFrame)
 
 void Bullet::onCollisionEnter(Entity* collision)
 {
-	LogInfo(teamToString(mTeam) + " bullet hit " + teamToString(collision->getTeam()) + " entity!")
+	logInfo(teamToString(mTeam) + " bullet hit " + teamToString(collision->getTeam()) + " entity!");
 	collision->takeDamage();
 	destroy();
 }

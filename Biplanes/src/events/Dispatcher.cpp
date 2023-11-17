@@ -1,6 +1,5 @@
 #include "events/Dispatcher.h"
 
-DEFINE_STATIC_LOGGER(Dispatcher, "main")
 std::unordered_map<EventID, std::vector<Dispatcher::SlotType>> Dispatcher::mObservers{};
 
 std::string eventIDToString(EventID id)
@@ -20,7 +19,7 @@ std::string eventIDToString(EventID id)
 void Dispatcher::subscribe(EventID eventID, const SlotType& slot)
 {
 	mObservers[eventID].push_back(slot);
-	LogInfo("[Dispatcher] Subscribing new event: " + eventIDToString(eventID))
+	logInfo("[Dispatcher] Subscribing new event: " + eventIDToString(eventID));
 }
 
 void Dispatcher::notify(const Event& event)

@@ -13,7 +13,6 @@ private:
 	void onPlaneDestroyed(const Event& event);
 	void onBoardPlane(const Event& event);
 private:
-	DECLARE_LOGGER
 	Player* mPlayer;
 	Plane* mPlane;
 	bool mHadTakenOff = false;

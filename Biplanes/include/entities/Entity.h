@@ -49,7 +49,6 @@ protected:
 	sf::Sprite mMainSprite;
 	Team mTeam;
 	Entity* mParent = nullptr;
-	DECLARE_LOGGER
 private:
 	std::vector<std::unique_ptr<Entity>> mChildren{};
 	EntityState mState = EntityState::Active;

@@ -4,8 +4,7 @@
 
 AI::AI() : mPlayer(), mPlane() 
 { 
-	DEFINE_LOGGER("main")
-	LogInfo("AI created!")
+	logInfo("AI created!");
 	Dispatcher::subscribe(EventID::EntityDestroyed, std::bind(&AI::onPlaneDestroyed, this, std::placeholders::_1));
 	Dispatcher::subscribe(EventID::BoardPlane, std::bind(&AI::onBoardPlane, this, std::placeholders::_1));
 };
@@ -71,7 +70,7 @@ void AI::onPlaneDestroyed(const Event& event)
 	if (mPlane == entityEvent.entity) {
 		mPlane = nullptr;
 		if (!mHasCatapulted) {
-			LogInfo("[AI] Requesting new plane")
+			logInfo("[AI] Requesting new plane");
 			Dispatcher::notify(RequestPlaneEvent(Team::Red));
 		}
 	}

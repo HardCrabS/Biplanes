@@ -46,10 +46,9 @@ public:
 	ResourcesManager(const ResourcesManager&) = delete;
 	void operator=(const ResourcesManager&) = delete;
 private:
-	ResourcesManager() {DEFINE_LOGGER("main")}
+	ResourcesManager() {}
 	void loadSequence(std::string sequencePath, std::vector<sf::Texture>& sequenceVector);
 
-	DECLARE_LOGGER
 	std::unordered_map<ResourceID, sf::Texture> mTextures;
 	std::unordered_map<ResourceID, std::vector<sf::Texture>> mSequences;
 	std::unordered_map<ResourceID, sf::Font> mFonts;

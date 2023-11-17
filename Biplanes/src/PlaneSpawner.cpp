@@ -6,8 +6,7 @@ PlaneSpawner::PlaneSpawner(const sf::Vector2f& viewSize, Entity* sceneRoot)
 	: mSceneRoot(sceneRoot)
 	, mViewSize(viewSize)
 {
-	DEFINE_LOGGER("main")
-	LogInfo("PlaneSpawner created!")
+	logInfo("PlaneSpawner created!");
 	mBlueSpawnPos = sf::Vector2f(70, GROUND_LEVEL);
 	mRedSpawnPos = sf::Vector2f(830.f, GROUND_LEVEL);
 }
@@ -37,6 +36,6 @@ void PlaneSpawner::spawnPlane(Team team)
 void PlaneSpawner::onRequestPlane(const Event& event)
 {
 	const RequestPlaneEvent& hangarReached = static_cast<const RequestPlaneEvent&>(event);
-	LogInfo("[PlaneSpawner] Request to spawn " + teamToString(hangarReached.team) + " plane.")
+	logInfo("[PlaneSpawner] Request to spawn " + teamToString(hangarReached.team) + " plane.");
 	spawnPlane(hangarReached.team);
 }

@@ -3,8 +3,7 @@
 
 Player::Player() : mPlane()
 {
-	DEFINE_LOGGER("main")
-	LogInfo("Player created!")
+	logInfo("Player created!");
 	Dispatcher::subscribe(EventID::EntityDestroyed, std::bind(&Player::onEntityDestroyed, this, std::placeholders::_1));
 	Dispatcher::subscribe(EventID::BoardPlane, std::bind(&Player::onBoardPlane, this, std::placeholders::_1));
 }
@@ -93,7 +92,7 @@ void Player::onEntityDestroyed(const Event& event)
 		mPlane = nullptr;
 		mParachutist = nullptr;
 		if (!mHasCatapulted || isParachutistDeath) {
-			LogInfo("[Player] Requesting new plane")
+			logInfo("[Player] Requesting new plane");
 			Dispatcher::notify(RequestPlaneEvent(mTeam));
 		}
 	}

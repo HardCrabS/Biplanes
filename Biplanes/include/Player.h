@@ -21,7 +21,6 @@ private:
 	void onEntityDestroyed(const Event& event);
 	void onBoardPlane(const Event& event);
 private:
-	DECLARE_LOGGER
 	Plane* mPlane{};
 	Parachutist* mParachutist{};
 	Entity* mSceneRoot;
